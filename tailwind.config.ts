@@ -54,7 +54,7 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				adrig: {
-					blue: '#1E40AF',
+					blue: '#1E40AF', // Updated to the requested blue color
 					lightBlue: '#bfdbfe',
 					white: '#ffffff',
 					black: '#000000',
