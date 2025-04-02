@@ -1,8 +1,50 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
+import { cn } from '@/lib/utils';
+
+const serviceItems = [
+  {
+    title: 'AI Automation',
+    description: 'Transform business processes with intelligent automation',
+    href: '/services/ai-automation',
+  },
+  {
+    title: 'Data Analysis',
+    description: 'Make smarter decisions with real-time insights',
+    href: '/services/data-analysis',
+  },
+  {
+    title: 'Chatbot Development',
+    description: 'Intelligent chatbots that engage and convert',
+    href: '/services/chatbot-development',
+  },
+  {
+    title: 'Workflow Automations',
+    description: 'Streamline business operations for maximum efficiency',
+    href: '/services/workflow-automations',
+  },
+  {
+    title: 'LLM Development',
+    description: 'Revolutionizing AI language understanding',
+    href: '/services/llm-development',
+  },
+  {
+    title: 'AI Consulting',
+    description: 'Expert guidance for AI-powered transformation',
+    href: '/services/ai-consulting',
+  },
+];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,9 +85,38 @@ const Header = () => {
           <Link to="/" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
             Home
           </Link>
-          <Link to="/services" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
-            Services
-          </Link>
+          
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="font-medium bg-transparent text-adrig-black hover:text-adrig-blue">
+                  Services
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[600px] gap-3 p-4 md:w-[600px] lg:w-[700px] grid-cols-2">
+                    {serviceItems.map((service) => (
+                      <li key={service.href} className="row-span-1">
+                        <NavigationMenuLink asChild>
+                          <Link
+                            to={service.href}
+                            className="flex h-full w-full select-none flex-col justify-between rounded-md bg-white p-4 no-underline outline-none hover:bg-gray-50 transition-colors"
+                          >
+                            <div className="mb-2 text-lg font-medium text-adrig-blue">
+                              {service.title}
+                            </div>
+                            <p className="text-sm text-gray-600">
+                              {service.description}
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+          
           <Link to="/about" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
             About Us
           </Link>
@@ -76,13 +147,32 @@ const Header = () => {
             >
               Home
             </Link>
-            <Link 
-              to="/services" 
-              className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Services
-            </Link>
+            
+            <div className="flex flex-col space-y-2">
+              <div className="flex items-center justify-between">
+                <Link 
+                  to="/services" 
+                  className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Services
+                </Link>
+              </div>
+              
+              <div className="pl-4 flex flex-col space-y-2 border-l-2 border-gray-200">
+                {serviceItems.map((service) => (
+                  <Link
+                    key={service.href}
+                    to={service.href}
+                    className="text-gray-600 hover:text-adrig-blue text-sm transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {service.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            
             <Link 
               to="/about" 
               className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"

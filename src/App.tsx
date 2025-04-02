@@ -11,6 +11,14 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
+// Service Pages
+import AIAutomation from "./pages/services/AIAutomation";
+import DataAnalysis from "./pages/services/DataAnalysis";
+import ChatbotDevelopment from "./pages/services/ChatbotDevelopment";
+import WorkflowAutomations from "./pages/services/WorkflowAutomations";
+import LLMDevelopment from "./pages/services/LLMDevelopment";
+import AIConsulting from "./pages/services/AIConsulting";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -24,6 +32,15 @@ const App = () => (
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          
+          {/* Service Pages */}
+          <Route path="/services/ai-automation" element={<AIAutomation />} />
+          <Route path="/services/data-analysis" element={<DataAnalysis />} />
+          <Route path="/services/chatbot-development" element={<ChatbotDevelopment />} />
+          <Route path="/services/workflow-automations" element={<WorkflowAutomations />} />
+          <Route path="/services/llm-development" element={<LLMDevelopment />} />
+          <Route path="/services/ai-consulting" element={<AIConsulting />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
