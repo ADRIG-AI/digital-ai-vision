@@ -33,13 +33,14 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
       <Header />
       
       <main className="flex-grow pt-20">
-        <section className="bg-adrig-blue text-white py-20">
+        {/* Shortened hero section */}
+        <section className="bg-adrig-blue text-white py-12">
           <div className="container mx-auto px-4 text-center">
-            <div className="inline-flex p-6 rounded-full bg-white/10 text-white mb-6">
-              <Icon size={48} />
+            <div className="inline-flex p-4 rounded-full bg-white/10 text-white mb-4">
+              <Icon size={36} />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">{title}</h1>
-            <p className="text-xl max-w-3xl mx-auto text-white/90">{subtitle}</p>
+            <h1 className="text-3xl md:text-4xl font-bold mb-3 text-white">{title}</h1>
+            <p className="text-lg max-w-3xl mx-auto text-white/90">{subtitle}</p>
           </div>
         </section>
         
@@ -49,7 +50,7 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
               <div className="md:w-1/2">
                 <h2 className="text-3xl font-bold mb-6">{title}</h2>
                 <p className="text-gray-700 mb-8 text-lg">{description}</p>
-                <Button className="cta-button">
+                <Button className="bg-adrig-blue text-white hover:bg-blue-900 transition-colors">
                   Request a Consultation
                 </Button>
               </div>
@@ -70,7 +71,7 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
             <div className="flex flex-col md:flex-row items-center gap-12">
               <div className="md:w-1/2 order-2 md:order-1">
                 <div className="bg-adrig-blue/5 rounded-xl p-8 h-full flex items-center justify-center">
-                  <Icon size={200} className="text-adrig-blue/30" />
+                  <Icon size={160} className="text-adrig-blue/30" />
                 </div>
               </div>
               
@@ -132,7 +133,7 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
             <p className="text-xl mb-8 max-w-2xl mx-auto text-white/90">
               Contact our team today to explore how our {title} services can help you achieve your business goals.
             </p>
-            <Button className="bg-white text-adrig-blue hover:bg-gray-100 transition-colors px-8 py-6 text-lg font-semibold">
+            <Button className="bg-white text-adrig-blue hover:bg-gray-100 transition-colors px-8 py-3 text-lg font-semibold">
               Schedule a Consultation
             </Button>
           </div>

@@ -1,47 +1,38 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, LogIn, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
-import { cn } from '@/lib/utils';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const serviceItems = [
   {
     title: 'AI Automation',
-    description: 'Transform business processes with intelligent automation',
     href: '/services/ai-automation',
   },
   {
     title: 'Data Analysis',
-    description: 'Make smarter decisions with real-time insights',
     href: '/services/data-analysis',
   },
   {
     title: 'Chatbot Development',
-    description: 'Intelligent chatbots that engage and convert',
     href: '/services/chatbot-development',
   },
   {
     title: 'Workflow Automations',
-    description: 'Streamline business operations for maximum efficiency',
     href: '/services/workflow-automations',
   },
   {
     title: 'LLM Development',
-    description: 'Revolutionizing AI language understanding',
     href: '/services/llm-development',
   },
   {
     title: 'AI Consulting',
-    description: 'Expert guidance for AI-powered transformation',
     href: '/services/ai-consulting',
   },
 ];
@@ -49,6 +40,8 @@ const serviceItems = [
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [showSignupForm, setShowSignupForm] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,136 +60,320 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeLoginSignupForms = () => {
+    setShowLoginForm(false);
+    setShowSignupForm(false);
+  };
+
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white shadow-md py-2' 
-          : 'bg-transparent py-4'
-      }`}
-    >
-      <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-        <Link to="/" className="flex items-center">
-          <span className="text-2xl font-bold text-adrig-blue">Adrig AI</span>
-        </Link>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
-            Home
+    <>
+      <header 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled 
+            ? 'bg-white shadow-md py-2' 
+            : 'bg-transparent py-4'
+        }`}
+      >
+        <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
+          <Link to="/" className="flex items-center">
+            <span className="text-2xl font-bold text-adrig-blue">Adrig AI</span>
           </Link>
-          
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="font-medium bg-transparent text-adrig-black hover:text-adrig-blue">
-                  Services
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[600px] gap-3 p-4 md:w-[600px] lg:w-[700px] grid-cols-2">
-                    {serviceItems.map((service) => (
-                      <li key={service.href} className="row-span-1">
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to={service.href}
-                            className="flex h-full w-full select-none flex-col justify-between rounded-md bg-white p-4 no-underline outline-none hover:bg-gray-50 transition-colors"
-                          >
-                            <div className="mb-2 text-lg font-medium text-adrig-blue">
-                              {service.title}
-                            </div>
-                            <p className="text-sm text-gray-600">
-                              {service.description}
-                            </p>
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-          
-          <Link to="/about" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
-            About Us
-          </Link>
-          <Link to="/contact" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
-            Contact
-          </Link>
-          <Button className="bg-adrig-blue text-white hover:bg-blue-700 transition-colors">
-            Get Started
-          </Button>
-        </nav>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden">
-          <button onClick={toggleMenu} className="text-adrig-black">
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white py-4 px-4 shadow-md absolute left-0 right-0 top-full">
-          <nav className="flex flex-col space-y-4">
-            <Link 
-              to="/" 
-              className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
               Home
             </Link>
             
-            <div className="flex flex-col space-y-2">
-              <div className="flex items-center justify-between">
-                <Link 
-                  to="/services" 
-                  className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Services
-                </Link>
-              </div>
-              
-              <div className="pl-4 flex flex-col space-y-2 border-l-2 border-gray-200">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="font-medium bg-transparent text-adrig-black hover:text-adrig-blue border-none">
+                Services
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
                 {serviceItems.map((service) => (
-                  <Link
-                    key={service.href}
-                    to={service.href}
-                    className="text-gray-600 hover:text-adrig-blue text-sm transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {service.title}
-                  </Link>
+                  <DropdownMenuItem key={service.href} asChild>
+                    <Link to={service.href} className="w-full">
+                      {service.title}
+                    </Link>
+                  </DropdownMenuItem>
                 ))}
-              </div>
-            </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
             
-            <Link 
-              to="/about" 
-              className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
+            <Link to="/about" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
               About Us
             </Link>
-            <Link 
-              to="/contact" 
-              className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
+            <Link to="/contact" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
               Contact
             </Link>
-            <Button 
-              className="bg-adrig-blue text-white hover:bg-blue-700 transition-colors w-full"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Get Started
-            </Button>
+            
+            <div className="flex space-x-2">
+              <Button 
+                variant="outline" 
+                className="text-adrig-blue border-adrig-blue hover:bg-adrig-blue hover:text-white transition-colors"
+                onClick={() => {
+                  setShowLoginForm(true);
+                  setShowSignupForm(false);
+                }}
+              >
+                <LogIn className="mr-2 h-4 w-4" />
+                Login
+              </Button>
+              <Button 
+                className="bg-adrig-blue text-white hover:bg-blue-900 transition-colors"
+                onClick={() => {
+                  setShowSignupForm(true);
+                  setShowLoginForm(false);
+                }}
+              >
+                <UserPlus className="mr-2 h-4 w-4" />
+                Sign Up
+              </Button>
+            </div>
           </nav>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button onClick={toggleMenu} className="text-adrig-black">
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white py-4 px-4 shadow-md absolute left-0 right-0 top-full">
+            <nav className="flex flex-col space-y-4">
+              <Link 
+                to="/" 
+                className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Home
+              </Link>
+              
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center justify-between">
+                  <Link 
+                    to="/services" 
+                    className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Services
+                  </Link>
+                </div>
+                
+                <div className="pl-4 flex flex-col space-y-2 border-l-2 border-gray-200">
+                  {serviceItems.map((service) => (
+                    <Link
+                      key={service.href}
+                      to={service.href}
+                      className="text-gray-600 hover:text-adrig-blue text-sm transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {service.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              
+              <Link 
+                to="/about" 
+                className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About Us
+              </Link>
+              <Link 
+                to="/contact" 
+                className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
+              </Link>
+              
+              <Button 
+                variant="outline" 
+                className="text-adrig-blue border-adrig-blue hover:bg-adrig-blue hover:text-white transition-colors w-full"
+                onClick={() => {
+                  setShowLoginForm(true);
+                  setShowSignupForm(false);
+                  setIsMenuOpen(false);
+                }}
+              >
+                <LogIn className="mr-2 h-4 w-4" />
+                Login
+              </Button>
+              <Button 
+                className="bg-adrig-blue text-white hover:bg-blue-900 transition-colors w-full"
+                onClick={() => {
+                  setShowSignupForm(true);
+                  setShowLoginForm(false);
+                  setIsMenuOpen(false);
+                }}
+              >
+                <UserPlus className="mr-2 h-4 w-4" />
+                Sign Up
+              </Button>
+            </nav>
+          </div>
+        )}
+      </header>
+
+      {/* Auth Modals */}
+      {(showLoginForm || showSignupForm) && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
+          <div className="bg-white rounded-lg p-8 max-w-md w-full">
+            {showLoginForm && (
+              <>
+                <h2 className="text-2xl font-bold mb-6 text-adrig-blue">Login</h2>
+                <form className="space-y-4">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                      placeholder="your@email.com"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                    <input
+                      type="password"
+                      id="password"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                      placeholder="••••••••"
+                    />
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center">
+                      <input
+                        id="remember-me"
+                        name="remember-me"
+                        type="checkbox"
+                        className="h-4 w-4 text-adrig-blue focus:ring-adrig-blue border-gray-300 rounded"
+                      />
+                      <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                        Remember me
+                      </label>
+                    </div>
+                    <a href="#" className="text-sm text-adrig-blue hover:underline">
+                      Forgot password?
+                    </a>
+                  </div>
+                  <Button className="w-full bg-adrig-blue text-white hover:bg-blue-900">
+                    Log in
+                  </Button>
+                  <div className="text-center mt-4">
+                    <span className="text-sm text-gray-600">Don't have an account? </span>
+                    <button
+                      type="button"
+                      className="text-sm text-adrig-blue hover:underline"
+                      onClick={() => {
+                        setShowLoginForm(false);
+                        setShowSignupForm(true);
+                      }}
+                    >
+                      Sign up
+                    </button>
+                  </div>
+                </form>
+              </>
+            )}
+            
+            {showSignupForm && (
+              <>
+                <h2 className="text-2xl font-bold mb-6 text-adrig-blue">Create an Account</h2>
+                <form className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">First name</label>
+                      <input
+                        type="text"
+                        id="first-name"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                        placeholder="John"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">Last name</label>
+                      <input
+                        type="text"
+                        id="last-name"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                        placeholder="Doe"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                      placeholder="your@email.com"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                    <input
+                      type="password"
+                      id="password"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                      placeholder="••••••••"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">Confirm Password</label>
+                    <input
+                      type="password"
+                      id="confirm-password"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                      placeholder="••••••••"
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      id="terms"
+                      name="terms"
+                      type="checkbox"
+                      className="h-4 w-4 text-adrig-blue focus:ring-adrig-blue border-gray-300 rounded"
+                    />
+                    <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
+                      I agree to the <a href="#" className="text-adrig-blue hover:underline">Terms</a> and <a href="#" className="text-adrig-blue hover:underline">Privacy Policy</a>
+                    </label>
+                  </div>
+                  <Button className="w-full bg-adrig-blue text-white hover:bg-blue-900">
+                    Sign up
+                  </Button>
+                  <div className="text-center mt-4">
+                    <span className="text-sm text-gray-600">Already have an account? </span>
+                    <button
+                      type="button"
+                      className="text-sm text-adrig-blue hover:underline"
+                      onClick={() => {
+                        setShowSignupForm(false);
+                        setShowLoginForm(true);
+                      }}
+                    >
+                      Log in
+                    </button>
+                  </div>
+                </form>
+              </>
+            )}
+            
+            <button
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              onClick={closeLoginSignupForms}
+            >
+              <X size={24} />
+            </button>
+          </div>
         </div>
       )}
-    </header>
+    </>
   );
 };
 
