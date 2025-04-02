@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -64,7 +63,7 @@ const timeline = [
   {
     year: '2019',
     title: 'AI Research Lab',
-    description: 'Established our dedicated AI research laboratory to push the boundaries of what's possible.'
+    description: "Established our dedicated AI research laboratory to push the boundaries of what's possible."
   },
   {
     year: '2020',
