@@ -13,13 +13,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin, 
-  Mail, 
+  MapPin, 
   Phone, 
-  MapPin,
+  Mail,
   Send
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
@@ -72,7 +68,7 @@ const Contact = () => {
       
       <main className="flex-grow pt-20">
         <section className="bg-adrig-blue text-white py-20">
-          <div className="container mx-auto px-6 md:px-8 lg:px-12 text-center">
+          <div className="container mx-auto px-8 lg:px-16 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">Get in Touch</h1>
             <p className="text-xl max-w-3xl mx-auto text-white/90">
               Have questions about our AI solutions? Ready to start your digital transformation journey? We're here to help!
@@ -81,8 +77,9 @@ const Contact = () => {
         </section>
         
         <section className="py-20 bg-white">
-          <div className="container mx-auto px-6 md:px-8 lg:px-12">
+          <div className="container mx-auto px-8 lg:px-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+              {/* Send a Message Section */}
               <div>
                 <h2 className="text-3xl font-bold mb-6">Send Us a Message</h2>
                 <p className="text-gray-600 mb-8">
@@ -179,8 +176,10 @@ const Contact = () => {
                 </form>
               </div>
               
-              <div className="flex flex-col justify-between">
-                <div className="bg-gray-50 p-8 rounded-xl mb-8">
+              {/* Contact Information and Map Section */}
+              <div className="flex flex-col space-y-8">
+                {/* Contact Information Card */}
+                <div className="bg-gray-50 p-8 rounded-xl">
                   <h2 className="text-3xl font-bold mb-6">Contact Information</h2>
                   
                   <div className="space-y-6">
@@ -210,42 +209,9 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div>
-                  <h2 className="text-2xl font-bold mb-6">Connect With Us</h2>
-                  <div className="flex space-x-6">
-                    <a 
-                      href="#" 
-                      className="bg-gray-100 p-3 rounded-full text-adrig-blue hover:bg-adrig-blue hover:text-white transition-colors"
-                      aria-label="Facebook"
-                    >
-                      <Facebook size={24} />
-                    </a>
-                    <a 
-                      href="#" 
-                      className="bg-gray-100 p-3 rounded-full text-adrig-blue hover:bg-adrig-blue hover:text-white transition-colors"
-                      aria-label="Twitter"
-                    >
-                      <Twitter size={24} />
-                    </a>
-                    <a 
-                      href="#" 
-                      className="bg-gray-100 p-3 rounded-full text-adrig-blue hover:bg-adrig-blue hover:text-white transition-colors"
-                      aria-label="Instagram"
-                    >
-                      <Instagram size={24} />
-                    </a>
-                    <a 
-                      href="#" 
-                      className="bg-gray-100 p-3 rounded-full text-adrig-blue hover:bg-adrig-blue hover:text-white transition-colors"
-                      aria-label="LinkedIn"
-                    >
-                      <Linkedin size={24} />
-                    </a>
-                  </div>
-                </div>
-                
-                <div className="mt-8 h-64 bg-gray-200 rounded-xl">
-                  {/* Map placeholder - would be replaced with actual Google Maps integration */}
+                {/* Map Placeholder */}
+                <div className="h-96 bg-gray-200 rounded-xl flex-grow">
+                  {/* Map placeholder */}
                   <div className="w-full h-full flex items-center justify-center">
                     <MapPin size={60} className="text-adrig-blue/30" />
                   </div>
