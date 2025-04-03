@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 import { cva } from "class-variance-authority"
@@ -12,10 +13,11 @@ const NavigationMenu = React.forwardRef<
   <NavigationMenuPrimitive.Root
     ref={ref}
     className={cn(
-      "relative z-10 flex max-w-max flex-1 items-center justify-center",
-      className
+      "relative z-10 flex max-w-max flex-1 items-center justify-center"
+, className
     )}
     {...props}
+    delayDuration={0} // Set delay to 0 for immediate hover response
   >
     {children}
     <NavigationMenuViewport />

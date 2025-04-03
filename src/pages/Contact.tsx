@@ -72,7 +72,7 @@ const Contact = () => {
       
       <main className="flex-grow pt-20">
         <section className="bg-adrig-blue text-white py-20">
-          <div className="container mx-auto px-4 text-center">
+          <div className="container mx-auto px-6 md:px-8 lg:px-12 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">Get in Touch</h1>
             <p className="text-xl max-w-3xl mx-auto text-white/90">
               Have questions about our AI solutions? Ready to start your digital transformation journey? We're here to help!
@@ -81,8 +81,8 @@ const Contact = () => {
         </section>
         
         <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="container mx-auto px-6 md:px-8 lg:px-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
               <div>
                 <h2 className="text-3xl font-bold mb-6">Send Us a Message</h2>
                 <p className="text-gray-600 mb-8">
@@ -179,39 +179,39 @@ const Contact = () => {
                 </form>
               </div>
               
-              <div>
+              <div className="flex flex-col justify-between">
                 <div className="bg-gray-50 p-8 rounded-xl mb-8">
                   <h2 className="text-3xl font-bold mb-6">Contact Information</h2>
                   
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     <div className="flex items-start">
-                      <MapPin className="mr-3 text-adrig-blue flex-shrink-0 mt-1" size={24} />
+                      <MapPin className="mr-4 text-adrig-blue flex-shrink-0 mt-1" size={24} />
                       <div>
-                        <h3 className="font-semibold">Office Location</h3>
-                        <p className="text-gray-600">123 Tech Avenue, Silicon Valley, CA 94043</p>
+                        <h3 className="font-semibold text-lg">Office Location</h3>
+                        <p className="text-gray-600 mt-1">123 Tech Avenue, Silicon Valley, CA 94043</p>
                       </div>
                     </div>
                     
                     <div className="flex items-start">
-                      <Phone className="mr-3 text-adrig-blue flex-shrink-0 mt-1" size={24} />
+                      <Phone className="mr-4 text-adrig-blue flex-shrink-0 mt-1" size={24} />
                       <div>
-                        <h3 className="font-semibold">Phone</h3>
-                        <p className="text-gray-600">(555) 123-4567</p>
+                        <h3 className="font-semibold text-lg">Phone</h3>
+                        <p className="text-gray-600 mt-1">(555) 123-4567</p>
                       </div>
                     </div>
                     
                     <div className="flex items-start">
-                      <Mail className="mr-3 text-adrig-blue flex-shrink-0 mt-1" size={24} />
+                      <Mail className="mr-4 text-adrig-blue flex-shrink-0 mt-1" size={24} />
                       <div>
-                        <h3 className="font-semibold">Email</h3>
-                        <p className="text-gray-600">info@adrigai.com</p>
+                        <h3 className="font-semibold text-lg">Email</h3>
+                        <p className="text-gray-600 mt-1">info@adrigai.com</p>
                       </div>
                     </div>
                   </div>
                 </div>
                 
                 <div>
-                  <h2 className="text-2xl font-bold mb-4">Connect With Us</h2>
+                  <h2 className="text-2xl font-bold mb-6">Connect With Us</h2>
                   <div className="flex space-x-6">
                     <a 
                       href="#" 
@@ -244,7 +244,7 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div className="mt-12 h-80 bg-gray-200 rounded-xl">
+                <div className="mt-8 h-64 bg-gray-200 rounded-xl">
                   {/* Map placeholder - would be replaced with actual Google Maps integration */}
                   <div className="w-full h-full flex items-center justify-center">
                     <MapPin size={60} className="text-adrig-blue/30" />

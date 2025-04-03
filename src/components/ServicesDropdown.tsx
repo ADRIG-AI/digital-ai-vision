@@ -63,10 +63,12 @@ export function ServicesDropdown() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="bg-transparent hover:bg-adrig-blue/10 text-white hover:text-white">
+          <NavigationMenuTrigger 
+            className="bg-transparent hover:bg-adrig-blue/10 text-white hover:text-white"
+          >
             Services
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="bg-white">
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
               {services.map((service) => (
                 <li key={service.href}>
