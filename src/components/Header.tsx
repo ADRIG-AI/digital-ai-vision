@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, LogIn, UserPlus } from 'lucide-react';
@@ -17,54 +16,54 @@ const serviceItems = [
     title: 'AI Automation',
     href: '/services/ai-automation',
     subcategories: [
-      { name: "Predictive Analytics", href: "/services/ai-automation#predictive-analytics" },
-      { name: "Machine Learning Solutions", href: "/services/ai-automation#machine-learning" },
-      { name: "AI Integration", href: "/services/ai-automation#ai-integration" }
+      { name: "Predictive Analytics", href: "/services/ai-automation/predictive-analytics" },
+      { name: "Machine Learning Solutions", href: "/services/ai-automation/machine-learning" },
+      { name: "AI Integration", href: "/services/ai-automation/ai-integration" }
     ]
   },
   {
     title: 'Data Analysis',
     href: '/services/data-analysis',
     subcategories: [
-      { name: "Business Intelligence", href: "/services/data-analysis#business-intelligence" },
-      { name: "Data Visualization", href: "/services/data-analysis#data-visualization" },
-      { name: "Big Data Processing", href: "/services/data-analysis#big-data" }
+      { name: "Business Intelligence", href: "/services/data-analysis/business-intelligence" },
+      { name: "Data Visualization", href: "/services/data-analysis/data-visualization" },
+      { name: "Big Data Processing", href: "/services/data-analysis/big-data" }
     ]
   },
   {
     title: 'Chatbot Development',
     href: '/services/chatbot-development',
     subcategories: [
-      { name: "Customer Support Bots", href: "/services/chatbot-development#customer-support" },
-      { name: "E-commerce Assistants", href: "/services/chatbot-development#ecommerce" },
-      { name: "Lead Generation Bots", href: "/services/chatbot-development#lead-generation" }
+      { name: "Customer Support Bots", href: "/services/chatbot-development/customer-support" },
+      { name: "E-commerce Assistants", href: "/services/chatbot-development/ecommerce" },
+      { name: "Lead Generation Bots", href: "/services/chatbot-development/lead-generation" }
     ]
   },
   {
     title: 'Workflow Automations',
     href: '/services/workflow-automations',
     subcategories: [
-      { name: "Process Optimization", href: "/services/workflow-automations#process-optimization" },
-      { name: "Task Automation", href: "/services/workflow-automations#task-automation" },
-      { name: "Integration Services", href: "/services/workflow-automations#integration" }
+      { name: "Process Optimization", href: "/services/workflow-automations/process-optimization" },
+      { name: "Task Automation", href: "/services/workflow-automations/task-automation" },
+      { name: "Integration Services", href: "/services/workflow-automations/integration" }
     ]
   },
   {
     title: 'LLM Development',
     href: '/services/llm-development',
     subcategories: [
-      { name: "Custom LLM Training", href: "/services/llm-development#custom-training" },
-      { name: "Language Understanding", href: "/services/llm-development#language-understanding" },
-      { name: "Content Generation", href: "/services/llm-development#content-generation" }
+      { name: "Custom LLM Training", href: "/services/llm-development/custom-training" },
+      { name: "Language Understanding", href: "/services/llm-development/language-understanding" },
+      { name: "Content Generation", href: "/services/llm-development/content-generation" }
     ]
   },
   {
     title: 'AI Consulting',
     href: '/services/ai-consulting',
     subcategories: [
-      { name: "AI Strategy Development", href: "/services/ai-consulting#strategy" },
-      { name: "Technology Assessment", href: "/services/ai-consulting#assessment" },
-      { name: "Implementation Planning", href: "/services/ai-consulting#implementation" }
+      { name: "AI Strategy Development", href: "/services/ai-consulting/strategy" },
+      { name: "Technology Assessment", href: "/services/ai-consulting/assessment" },
+      { name: "Implementation Planning", href: "/services/ai-consulting/implementation" }
     ]
   },
 ];
@@ -123,10 +122,6 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
-              Home
-            </Link>
-            
             <ServicesDropdown />
             
             <Link to="/about" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
@@ -173,14 +168,6 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-white py-4 px-4 shadow-md absolute left-0 right-0 top-full max-h-[80vh] overflow-y-auto">
             <nav className="flex flex-col space-y-4">
-              <Link 
-                to="/" 
-                className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Home
-              </Link>
-              
               {/* Mobile Services Menu with Subcategories */}
               {serviceItems.map((service) => (
                 <div key={service.href} className="flex flex-col">
