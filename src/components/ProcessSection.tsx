@@ -1,5 +1,5 @@
 
-import { MagnifyingGlass, Code, Cog } from 'lucide-react';
+import { Search, Code, Cog } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const ProcessSection = () => {
@@ -18,7 +18,7 @@ const ProcessSection = () => {
                 <div className="p-8 flex flex-col h-full">
                   <div className="bg-zinc-800 p-6 mb-8 w-full rounded-lg">
                     <div className="flex justify-center items-center">
-                      <MagnifyingGlass size={48} className="text-blue-400" />
+                      <Search size={48} className="text-blue-400" />
                     </div>
                   </div>
                   <h3 className="text-3xl font-bold mb-2 text-white flex items-center">
