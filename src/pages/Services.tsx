@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Brain, Database, MessageCircle, Workflow, Code, Lightbulb, Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const servicesData = [
   {
@@ -140,9 +141,11 @@ const Services = () => {
                   </div>
                   
                   <div className="mt-8">
-                    <Button className="cta-button">
-                      Learn More About {service.title}
-                    </Button>
+                    <Link to="/contact">
+                      <Button className="cta-button">
+                        Learn More About {service.title}
+                      </Button>
+                    </Link>
                   </div>
                 </div>
                 
@@ -160,9 +163,11 @@ const Services = () => {
             <p className="text-xl mb-8 max-w-2xl mx-auto text-white/90">
               Contact our team today to explore how our AI services can help you achieve your business goals.
             </p>
-            <Button className="bg-white text-adrig-blue hover:bg-gray-100 transition-colors px-8 py-6 text-lg font-semibold">
-              Schedule a Consultation
-            </Button>
+            <Link to="/contact">
+              <Button className="bg-white text-adrig-blue hover:bg-gray-100 transition-colors px-8 py-6 text-lg font-semibold">
+                Schedule a Consultation
+              </Button>
+            </Link>
           </div>
         </section>
       </main>

@@ -69,7 +69,7 @@ const ServicesSection = () => {
                 </div>
                 <h3 className="text-2xl font-bold mb-3 text-black">{service.title}</h3>
                 <p className="text-gray-600 mb-4">{service.description}</p>
-                <Link to={service.path}>
+                <Link to="/contact">
                   <Button variant="outline" className="border-adrig-blue text-adrig-blue hover:bg-adrig-blue hover:text-white">
                     Learn More
                   </Button>
@@ -92,7 +92,7 @@ const ServicesSection = () => {
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-black">{service.title}</h3>
                 <p className="text-gray-600 mb-4 flex-grow">{service.description}</p>
-                <Link to={service.path}>
+                <Link to="/contact">
                   <Button variant="outline" className="border-adrig-blue text-adrig-blue hover:bg-adrig-blue hover:text-white">
                     Learn More
                   </Button>

@@ -9,31 +9,63 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import ServicesDropdown from './ServicesDropdown';
 
+// Service items for mobile menu
 const serviceItems = [
   {
     title: 'AI Automation',
     href: '/services/ai-automation',
+    subcategories: [
+      { name: "Predictive Analytics", href: "/services/ai-automation#predictive-analytics" },
+      { name: "Machine Learning Solutions", href: "/services/ai-automation#machine-learning" },
+      { name: "AI Integration", href: "/services/ai-automation#ai-integration" }
+    ]
   },
   {
     title: 'Data Analysis',
     href: '/services/data-analysis',
+    subcategories: [
+      { name: "Business Intelligence", href: "/services/data-analysis#business-intelligence" },
+      { name: "Data Visualization", href: "/services/data-analysis#data-visualization" },
+      { name: "Big Data Processing", href: "/services/data-analysis#big-data" }
+    ]
   },
   {
     title: 'Chatbot Development',
     href: '/services/chatbot-development',
+    subcategories: [
+      { name: "Customer Support Bots", href: "/services/chatbot-development#customer-support" },
+      { name: "E-commerce Assistants", href: "/services/chatbot-development#ecommerce" },
+      { name: "Lead Generation Bots", href: "/services/chatbot-development#lead-generation" }
+    ]
   },
   {
     title: 'Workflow Automations',
     href: '/services/workflow-automations',
+    subcategories: [
+      { name: "Process Optimization", href: "/services/workflow-automations#process-optimization" },
+      { name: "Task Automation", href: "/services/workflow-automations#task-automation" },
+      { name: "Integration Services", href: "/services/workflow-automations#integration" }
+    ]
   },
   {
     title: 'LLM Development',
     href: '/services/llm-development',
+    subcategories: [
+      { name: "Custom LLM Training", href: "/services/llm-development#custom-training" },
+      { name: "Language Understanding", href: "/services/llm-development#language-understanding" },
+      { name: "Content Generation", href: "/services/llm-development#content-generation" }
+    ]
   },
   {
     title: 'AI Consulting',
     href: '/services/ai-consulting',
+    subcategories: [
+      { name: "AI Strategy Development", href: "/services/ai-consulting#strategy" },
+      { name: "Technology Assessment", href: "/services/ai-consulting#assessment" },
+      { name: "Implementation Planning", href: "/services/ai-consulting#implementation" }
+    ]
   },
 ];
 
@@ -42,6 +74,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showSignupForm, setShowSignupForm] = useState(false);
+  const [expandedService, setExpandedService] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,6 +91,15 @@ const Header = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+    setExpandedService(null);
+  };
+
+  const toggleServiceExpand = (serviceTitle: string) => {
+    if (expandedService === serviceTitle) {
+      setExpandedService(null);
+    } else {
+      setExpandedService(serviceTitle);
+    }
   };
 
   const closeLoginSignupForms = () => {
@@ -85,20 +127,7 @@ const Header = () => {
               Home
             </Link>
             
-            <DropdownMenu>
-              <DropdownMenuTrigger className="font-medium bg-transparent text-adrig-black hover:text-adrig-blue border-none">
-                Services
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {serviceItems.map((service) => (
-                  <DropdownMenuItem key={service.href} asChild>
-                    <Link to={service.href} className="w-full">
-                      {service.title}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <ServicesDropdown />
             
             <Link to="/about" className="text-adrig-black hover:text-adrig-blue font-medium transition-colors">
               About Us
@@ -142,7 +171,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white py-4 px-4 shadow-md absolute left-0 right-0 top-full">
+          <div className="md:hidden bg-white py-4 px-4 shadow-md absolute left-0 right-0 top-full max-h-[80vh] overflow-y-auto">
             <nav className="flex flex-col space-y-4">
               <Link 
                 to="/" 
@@ -152,30 +181,44 @@ const Header = () => {
                 Home
               </Link>
               
-              <div className="flex flex-col space-y-2">
-                <div className="flex items-center justify-between">
-                  <Link 
-                    to="/services" 
-                    className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Services
-                  </Link>
-                </div>
-                
-                <div className="pl-4 flex flex-col space-y-2 border-l-2 border-gray-200">
-                  {serviceItems.map((service) => (
-                    <Link
-                      key={service.href}
-                      to={service.href}
-                      className="text-gray-600 hover:text-adrig-blue text-sm transition-colors"
+              {/* Mobile Services Menu with Subcategories */}
+              {serviceItems.map((service) => (
+                <div key={service.href} className="flex flex-col">
+                  <div className="flex items-center justify-between">
+                    <Link 
+                      to={service.href} 
+                      className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {service.title}
                     </Link>
-                  ))}
+                    <button 
+                      onClick={() => toggleServiceExpand(service.title)}
+                      className="p-1 text-gray-500"
+                    >
+                      {expandedService === service.title ? 
+                        <X size={16} /> : 
+                        <Menu size={16} />
+                      }
+                    </button>
+                  </div>
+                  
+                  {expandedService === service.title && (
+                    <div className="pl-4 flex flex-col space-y-2 border-l-2 border-gray-200 mt-2">
+                      {service.subcategories.map((subcategory) => (
+                        <Link
+                          key={subcategory.href}
+                          to={subcategory.href}
+                          className="text-gray-600 hover:text-adrig-blue text-sm transition-colors py-1"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {subcategory.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
+              ))}
               
               <Link 
                 to="/about" 

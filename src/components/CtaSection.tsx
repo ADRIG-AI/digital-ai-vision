@@ -1,5 +1,6 @@
 
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const CtaSection = () => {
   return (
@@ -10,9 +11,11 @@ const CtaSection = () => {
           Ready to transform your business with cutting-edge AI solutions? 
           Our team of experts is ready to help you navigate the future of technology.
         </p>
-        <Button className="bg-white text-adrig-blue hover:bg-gray-100 transition-colors text-lg px-8 py-6 font-semibold hover:scale-105 transform transition-transform">
-          Schedule a Consultation
-        </Button>
+        <Link to="/contact">
+          <Button className="bg-white text-adrig-blue hover:bg-gray-100 transition-colors text-lg px-8 py-6 font-semibold hover:scale-105 transform transition-transform">
+            Schedule a Consultation
+          </Button>
+        </Link>
       </div>
     </section>
   );
