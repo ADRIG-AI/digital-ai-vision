@@ -195,7 +195,7 @@ export function ServicesDropdown() {
           <NavigationMenuTrigger className="text-adrig-black hover:text-adrig-blue">
             Services
           </NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-white w-[900px] p-0">
+          <NavigationMenuContent className="bg-white w-[900px] p-0 -translate-x-1/4">
             <div className="flex">
               {/* Left sidebar with categories */}
               <div className="w-[250px] bg-gray-50 py-3">
