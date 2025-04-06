@@ -1,20 +1,21 @@
 
 import React from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Check, ArrowRight } from 'lucide-react';
+import { ChevronRight, Check } from 'lucide-react';
+import Header from './Header';
+import Footer from './Footer';
+import { Button } from './ui/button';
 
 interface SubcategoryTemplateProps {
   title: string;
   parentService: string;
   parentServicePath: string;
   description: string;
+  imageUrl: string;
   keyFeatures: string[];
   benefits: string[];
-  imageUrl?: string;
-  useCases?: string[];
+  useCases: string[];
+  children?: React.ReactNode; // Added to allow additional content
 }
 
 const SubcategoryTemplate: React.FC<SubcategoryTemplateProps> = ({
@@ -22,58 +23,67 @@ const SubcategoryTemplate: React.FC<SubcategoryTemplateProps> = ({
   parentService,
   parentServicePath,
   description,
+  imageUrl,
   keyFeatures,
   benefits,
-  imageUrl,
-  useCases = [],
+  useCases,
+  children,
 }) => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-grow pt-20">
-        {/* Hero section */}
-        <section className="bg-adrig-blue text-white py-16">
+        {/* Breadcrumb */}
+        <div className="bg-gray-100 py-4">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center">
-              <div className="md:w-1/2 md:pr-12">
-                <div className="mb-2">
-                  <Link to={parentServicePath} className="text-white/80 hover:text-white text-sm">
-                    {parentService}
-                  </Link>
-                  <span className="mx-2 text-white/50">/</span>
-                  <span className="text-white text-sm">{title}</span>
-                </div>
-                <h1 className="text-3xl md:text-4xl font-bold mb-4 text-white">{title}</h1>
-                <p className="text-lg text-white/90 mb-6">{description}</p>
+            <div className="flex items-center text-sm text-gray-600">
+              <Link to="/" className="hover:text-adrig-blue">Home</Link>
+              <ChevronRight className="h-4 w-4 mx-1" />
+              <Link to="/services" className="hover:text-adrig-blue">Services</Link>
+              <ChevronRight className="h-4 w-4 mx-1" />
+              <Link to={parentServicePath} className="hover:text-adrig-blue">{parentService}</Link>
+              <ChevronRight className="h-4 w-4 mx-1" />
+              <span className="text-adrig-blue font-medium">{title}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Hero Section */}
+        <section className="bg-white py-16">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row items-center gap-10">
+              <div className="md:w-1/2">
+                <h1 className="text-4xl font-bold mb-6">{title}</h1>
+                <p className="text-xl text-gray-700 mb-8">{description}</p>
                 <Link to="/contact">
-                  <Button className="bg-white text-adrig-blue hover:bg-gray-100">
-                    Contact Us
+                  <Button size="lg" className="bg-adrig-blue hover:bg-blue-800">
+                    Schedule a Consultation
                   </Button>
                 </Link>
               </div>
-              <div className="md:w-1/2 mt-8 md:mt-0">
+              <div className="md:w-1/2">
                 <img 
-                  src={imageUrl || "/lovable-uploads/corporate-dashboard.jpg"} 
+                  src={imageUrl} 
                   alt={title} 
-                  className="rounded-lg shadow-lg w-full h-auto"
+                  className="rounded-lg shadow-lg w-full max-h-[400px] object-cover" 
                 />
               </div>
             </div>
           </div>
         </section>
-        
+
         {/* Key Features */}
-        <section className="py-16 bg-white">
+        <section className="bg-gray-50 py-16">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-10 text-center">Key Features</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {keyFeatures.map((feature, index) => (
-                <div key={index} className="flex items-start">
-                  <div className="mr-4 bg-adrig-blue/10 p-2 rounded-full">
-                    <Check className="h-5 w-5 text-adrig-blue" />
-                  </div>
-                  <div>
+                <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+                  <div className="flex items-start">
+                    <div className="mr-4 p-2 bg-adrig-blue/10 rounded-full">
+                      <Check className="h-6 w-6 text-adrig-blue" />
+                    </div>
                     <p className="text-gray-700">{feature}</p>
                   </div>
                 </div>
@@ -81,59 +91,61 @@ const SubcategoryTemplate: React.FC<SubcategoryTemplateProps> = ({
             </div>
           </div>
         </section>
-        
+
         {/* Benefits */}
-        <section className="py-16 bg-gray-50">
+        <section className="bg-white py-16">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-10 text-center">Benefits</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <h2 className="text-3xl font-bold mb-10 text-center">How Your Business Benefits</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
               {benefits.map((benefit, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                  <div className="text-adrig-blue font-bold text-xl mb-2">0{index + 1}</div>
+                <div key={index} className="flex items-start">
+                  <div className="mr-4 p-2 bg-adrig-blue/10 rounded-full shrink-0">
+                    <span className="flex items-center justify-center h-6 w-6 text-adrig-blue font-bold">
+                      {index + 1}
+                    </span>
+                  </div>
                   <p className="text-gray-700">{benefit}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
-        
-        {/* Use Cases (if available) */}
-        {useCases.length > 0 && (
-          <section className="py-16 bg-white">
-            <div className="container mx-auto px-4">
-              <h2 className="text-3xl font-bold mb-10 text-center">Use Cases</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {useCases.map((useCase, index) => (
-                  <div key={index} className="border border-gray-200 p-6 rounded-lg">
-                    <div className="flex items-start">
-                      <div className="mr-4 bg-adrig-blue/10 p-2 rounded-full">
-                        <ArrowRight className="h-5 w-5 text-adrig-blue" />
-                      </div>
-                      <p className="text-gray-700">{useCase}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+
+        {/* Use Cases */}
+        <section className="bg-adrig-blue py-16 text-white">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-10 text-center">Use Cases</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {useCases.map((useCase, index) => (
+                <div key={index} className="border border-white/20 p-6 rounded-lg bg-adrig-blue/30 hover:bg-adrig-blue/40 transition-colors">
+                  <h3 className="text-xl font-semibold mb-2">Use Case {index + 1}</h3>
+                  <p>{useCase}</p>
+                </div>
+              ))}
             </div>
-          </section>
-        )}
-        
-        {/* CTA */}
-        <section className="py-16 bg-adrig-blue text-white">
+          </div>
+        </section>
+
+        {/* Render additional custom content if provided */}
+        {children}
+
+        {/* CTA Section */}
+        <section className="bg-gray-50 py-16">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
-            <p className="text-lg mb-8 max-w-2xl mx-auto">
-              Contact our team today to learn more about our {title} solutions and how they can benefit your business.
+            <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
+            <p className="text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
+              Let's discuss how our {title.toLowerCase()} solutions can help your business 
+              gain a competitive edge and drive growth.
             </p>
             <Link to="/contact">
-              <Button className="bg-white text-adrig-blue hover:bg-gray-100 text-lg px-8 py-3">
-                Schedule a Consultation
+              <Button size="lg" className="bg-adrig-blue hover:bg-blue-800">
+                Contact Our Team
               </Button>
             </Link>
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   );

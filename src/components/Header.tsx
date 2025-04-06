@@ -1,79 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, LogIn, UserPlus } from 'lucide-react';
+import { Menu, X, LogIn, UserPlus, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import ServicesDropdown from './ServicesDropdown';
-
-// Service items for mobile menu
-const serviceItems = [
-  {
-    title: 'AI Automation',
-    href: '/services/ai-automation',
-    subcategories: [
-      { name: "Predictive Analytics", href: "/services/ai-automation/predictive-analytics" },
-      { name: "Machine Learning Solutions", href: "/services/ai-automation/machine-learning" },
-      { name: "AI Integration", href: "/services/ai-automation/ai-integration" }
-    ]
-  },
-  {
-    title: 'Data Analysis',
-    href: '/services/data-analysis',
-    subcategories: [
-      { name: "Business Intelligence", href: "/services/data-analysis/business-intelligence" },
-      { name: "Data Visualization", href: "/services/data-analysis/data-visualization" },
-      { name: "Big Data Processing", href: "/services/data-analysis/big-data" }
-    ]
-  },
-  {
-    title: 'Chatbot Development',
-    href: '/services/chatbot-development',
-    subcategories: [
-      { name: "Customer Support Bots", href: "/services/chatbot-development/customer-support" },
-      { name: "E-commerce Assistants", href: "/services/chatbot-development/ecommerce" },
-      { name: "Lead Generation Bots", href: "/services/chatbot-development/lead-generation" }
-    ]
-  },
-  {
-    title: 'Workflow Automations',
-    href: '/services/workflow-automations',
-    subcategories: [
-      { name: "Process Optimization", href: "/services/workflow-automations/process-optimization" },
-      { name: "Task Automation", href: "/services/workflow-automations/task-automation" },
-      { name: "Integration Services", href: "/services/workflow-automations/integration" }
-    ]
-  },
-  {
-    title: 'LLM Development',
-    href: '/services/llm-development',
-    subcategories: [
-      { name: "Custom LLM Training", href: "/services/llm-development/custom-training" },
-      { name: "Language Understanding", href: "/services/llm-development/language-understanding" },
-      { name: "Content Generation", href: "/services/llm-development/content-generation" }
-    ]
-  },
-  {
-    title: 'AI Consulting',
-    href: '/services/ai-consulting',
-    subcategories: [
-      { name: "AI Strategy Development", href: "/services/ai-consulting/strategy" },
-      { name: "Technology Assessment", href: "/services/ai-consulting/assessment" },
-      { name: "Implementation Planning", href: "/services/ai-consulting/implementation" }
-    ]
-  },
-];
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import ServicesDropdown, { services } from './ServicesDropdown';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showSignupForm, setShowSignupForm] = useState(false);
-  const [expandedService, setExpandedService] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -90,15 +31,6 @@ const Header = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    setExpandedService(null);
-  };
-
-  const toggleServiceExpand = (serviceTitle: string) => {
-    if (expandedService === serviceTitle) {
-      setExpandedService(null);
-    } else {
-      setExpandedService(serviceTitle);
-    }
   };
 
   const closeLoginSignupForms = () => {
@@ -168,55 +100,62 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-white py-4 px-4 shadow-md absolute left-0 right-0 top-full max-h-[80vh] overflow-y-auto">
             <nav className="flex flex-col space-y-4">
-              {/* Mobile Services Menu with Subcategories */}
-              {serviceItems.map((service) => (
-                <div key={service.href} className="flex flex-col">
-                  <div className="flex items-center justify-between">
-                    <Link 
-                      to={service.href} 
-                      className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {service.title}
-                    </Link>
-                    <button 
-                      onClick={() => toggleServiceExpand(service.title)}
-                      className="p-1 text-gray-500"
-                    >
-                      {expandedService === service.title ? 
-                        <X size={16} /> : 
-                        <Menu size={16} />
-                      }
-                    </button>
-                  </div>
-                  
-                  {expandedService === service.title && (
-                    <div className="pl-4 flex flex-col space-y-2 border-l-2 border-gray-200 mt-2">
-                      {service.subcategories.map((subcategory) => (
-                        <Link
-                          key={subcategory.href}
-                          to={subcategory.href}
-                          className="text-gray-600 hover:text-adrig-blue text-sm transition-colors py-1"
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          {subcategory.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+              {/* Mobile Services Menu with Accordion */}
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="services" className="border-b-0">
+                  <AccordionTrigger className="py-2 text-adrig-black hover:text-adrig-blue font-medium">
+                    Services
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    {services.map((service) => (
+                      <Accordion key={service.title} type="single" collapsible className="w-full pl-4">
+                        <AccordionItem value={service.title} className="border-b-0">
+                          <AccordionTrigger className="py-2">
+                            <div className="flex items-center">
+                              <service.icon className="h-4 w-4 mr-2" />
+                              <span className="text-sm">{service.title}</span>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <div className="pl-6 space-y-2">
+                              {service.subcategories.map((subcategory) => (
+                                <Link
+                                  key={subcategory.href}
+                                  to={subcategory.href}
+                                  className="flex items-center py-1 text-sm text-gray-700 hover:text-adrig-blue"
+                                  onClick={() => setIsMenuOpen(false)}
+                                >
+                                  <subcategory.icon className="h-3 w-3 mr-2" />
+                                  {subcategory.name}
+                                </Link>
+                              ))}
+                              <Link
+                                to={service.href}
+                                className="flex items-center py-1 text-sm text-adrig-blue font-medium hover:underline"
+                                onClick={() => setIsMenuOpen(false)}
+                              >
+                                View all {service.title}
+                                <ChevronRight className="h-3 w-3 ml-1" />
+                              </Link>
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    ))}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
               
               <Link 
                 to="/about" 
-                className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
+                className="text-adrig-black hover:text-adrig-blue font-medium transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About Us
               </Link>
               <Link 
                 to="/contact" 
-                className="text-adrig-black hover:text-adrig-blue font-medium transition-colors"
+                className="text-adrig-black hover:text-adrig-blue font-medium transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact
