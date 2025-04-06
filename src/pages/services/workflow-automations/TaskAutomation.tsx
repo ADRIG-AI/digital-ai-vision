@@ -1,3 +1,4 @@
+
 import SubcategoryTemplate from "@/components/SubcategoryTemplate";
 import { CheckCircle } from "lucide-react";
 
