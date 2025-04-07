@@ -50,50 +50,30 @@ const ServicesSection = () => {
           What <span className="text-adrig-blue">we do</span>
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {services.slice(0, 2).map((service, index) => (
-            <Card key={index} className="bg-white border-gray-200 shadow-lg overflow-hidden rounded-xl hover:shadow-xl transition-shadow duration-300">
-              <CardContent className="p-6">
-                <div className="mb-6 rounded-lg overflow-hidden h-64">
-                  {service.image ? (
-                    <img 
-                      src={service.image} 
-                      alt={service.title} 
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-                    />
-                  ) : (
-                    <div className="w-full h-64 bg-gray-100 rounded flex items-center justify-center">
-                      <span className="text-adrig-blue">Service Preview</span>
-                    </div>
-                  )}
-                </div>
-                <h3 className="text-2xl font-bold mb-3 text-black">{service.title}</h3>
-                <p className="text-gray-600 mb-4">{service.description}</p>
-                <Link to="/contact">
-                  <Button variant="outline" className="border-adrig-blue text-adrig-blue hover:bg-adrig-blue hover:text-white">
-                    Learn More
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {services.slice(2, 5).map((service, index) => (
-            <Card key={index} className="bg-white border-gray-200 shadow-lg overflow-hidden rounded-xl h-full hover:shadow-xl transition-shadow duration-300">
-              <CardContent className="p-6 h-full flex flex-col">
-                <div className="mb-4 rounded-lg overflow-hidden h-40">
+          {services.map((service, index) => (
+            <Card 
+              key={index} 
+              className="bg-gray-900 border-0 overflow-hidden rounded-xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+            >
+              <div className="h-48 bg-gray-800 overflow-hidden">
+                {service.image ? (
                   <img 
                     src={service.image} 
                     alt={service.title} 
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
                   />
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-black">{service.title}</h3>
-                <p className="text-gray-600 mb-4 flex-grow">{service.description}</p>
-                <Link to="/contact">
-                  <Button variant="outline" className="border-adrig-blue text-adrig-blue hover:bg-adrig-blue hover:text-white">
+                ) : (
+                  <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                    <span className="text-adrig-blue">Service Preview</span>
+                  </div>
+                )}
+              </div>
+              <CardContent className="p-6">
+                <h3 className="text-xl font-bold mb-3 text-white">{service.title}</h3>
+                <p className="text-gray-300 mb-4">{service.description}</p>
+                <Link to={service.path}>
+                  <Button className="bg-adrig-blue text-white hover:bg-blue-700">
                     Learn More
                   </Button>
                 </Link>
