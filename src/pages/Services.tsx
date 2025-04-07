@@ -94,7 +94,7 @@ const servicesData = [
 
 const Services = () => {
   return (
-    <div className="md:w-1/2">
+    <div className="flex flex-col md:flex-row items-center gap-12">
       <Header />
       
       <main className="flex-grow pt-20">
