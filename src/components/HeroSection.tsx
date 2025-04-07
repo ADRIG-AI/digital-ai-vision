@@ -1,6 +1,7 @@
 
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -120,18 +121,30 @@ const HeroSection = () => {
       <div className="hero-gradient absolute inset-0 z-10"></div>
       
       <div className="container mx-auto px-4 z-20 animate-fade-in">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            The Future of Digital Transformation Starts Here!
-          </h1>
+        <div className="flex flex-col md:flex-row items-center">
+          <div className="text-center md:text-left md:w-1/2 mb-8 md:mb-0">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              The Future of Digital Transformation Starts Here!
+            </h1>
+            
+            <p className="text-xl md:text-2xl mb-8">
+              Empowering businesses with cutting-edge AI solutions, automation, and scalable SaaS products.
+            </p>
+            
+            <Link to="/contact">
+              <Button className="cta-button text-lg bg-adrig-blue hover:bg-blue-700 text-white px-8 py-6">
+                Get Started Today
+              </Button>
+            </Link>
+          </div>
           
-          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            Empowering businesses with cutting-edge AI solutions, automation, and scalable SaaS products.
-          </p>
-          
-          <Button className="cta-button text-lg">
-            Get Started Today
-          </Button>
+          <div className="md:w-1/2">
+            <img 
+              src="/lovable-uploads/ai-development.jpg" 
+              alt="AI Development" 
+              className="rounded-xl shadow-lg max-w-full md:max-w-lg mx-auto"
+            />
+          </div>
         </div>
       </div>
     </section>

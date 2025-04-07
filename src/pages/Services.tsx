@@ -142,7 +142,7 @@ const Services = () => {
                   
                   <div className="mt-8">
                     <Link to="/contact">
-                      <Button className="cta-button">
+                      <Button className="cta-button bg-adrig-blue hover:bg-blue-700 text-white">
                         Learn More About {service.title}
                       </Button>
                     </Link>
