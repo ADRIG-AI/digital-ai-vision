@@ -12,9 +12,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react({
-      jsxImportSource: "@emotion/react",
-      // Remove the babel property since it doesn't exist in the Options type
-      // and the @emotion/babel-plugin should be handled differently with SWC
+      jsxImportSource: "react", // Changed from @emotion/react to react
     }),
     mode === 'development' &&
     componentTagger(),
