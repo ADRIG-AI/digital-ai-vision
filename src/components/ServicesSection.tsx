@@ -11,12 +11,6 @@ const services = [
     path: '/services/chatbot-development'
   },
   {
-    title: 'Content Creation',
-    description: 'Our content creation solutions effortlessly generate high-quality, engaging content according to your brand\'s guidelines to captivate your audience.',
-    image: 'https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=1400',
-    path: '/services/ai-automation'
-  },
-  {
     title: 'Workflow Automations',
     description: 'Over 100+ automations to streamline your operations, improve efficiency and reduce costs with our custom AI solutions.',
     image: 'https://images.unsplash.com/photo-1607703703520-bb638e84caf2?auto=format&fit=crop&q=80&w=1400',

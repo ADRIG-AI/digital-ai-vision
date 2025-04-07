@@ -1,15 +1,6 @@
 
 import { useEffect, useRef } from 'react';
-
-const logos = [
-  { name: 'Google', url: '/logos/logo1.svg' },
-  { name: 'Amazon', url: '/logos/logo2.svg' },
-  { name: 'Microsoft', url: '/logos/logo3.svg' },
-  { name: 'Apple', url: '/logos/logo4.svg' },
-  { name: 'IBM', url: '/logos/logo5.svg' },
-  { name: 'Oracle', url: '/logos/logo6.svg' },
-  { name: 'Samsung', url: '/logos/logo7.svg' },
-];
+import { CircleCheck } from 'lucide-react';
 
 const placeholderLogos = [
   "Acme Inc.",
@@ -46,8 +37,9 @@ const ClientLogos = () => {
             {placeholderLogos.map((logo, index) => (
               <div 
                 key={index} 
-                className="flex-shrink-0 flex items-center justify-center h-20 w-40 bg-white rounded-lg shadow-sm"
+                className="flex-shrink-0 flex items-center justify-center h-20 px-6 bg-white rounded-lg shadow-sm"
               >
+                <CircleCheck className="text-adrig-blue mr-2 flex-shrink-0" size={24} />
                 <span className="text-xl font-semibold text-adrig-blue">{logo}</span>
               </div>
             ))}
@@ -55,8 +47,9 @@ const ClientLogos = () => {
             {placeholderLogos.map((logo, index) => (
               <div 
                 key={`duplicate-${index}`} 
-                className="flex-shrink-0 flex items-center justify-center h-20 w-40 bg-white rounded-lg shadow-sm"
+                className="flex-shrink-0 flex items-center justify-center h-20 px-6 bg-white rounded-lg shadow-sm"
               >
+                <CircleCheck className="text-adrig-blue mr-2 flex-shrink-0" size={24} />
                 <span className="text-xl font-semibold text-adrig-blue">{logo}</span>
               </div>
             ))}
