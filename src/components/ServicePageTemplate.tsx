@@ -5,9 +5,22 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Link } from 'react-router-dom';
 
 interface Benefit {
   text: string;
+}
+
+interface CaseStudy {
+  title: string;
+  description: string;
+  results: string;
+}
+
+interface FAQItem {
+  question: string;
+  answer: string;
 }
 
 interface ServicePageTemplateProps {
@@ -20,6 +33,8 @@ interface ServicePageTemplateProps {
   keyFeaturesImage?: string;
   howItWorks: string;
   benefits: Benefit[];
+  caseStudies?: CaseStudy[];
+  faqItems?: FAQItem[];
 }
 
 const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
@@ -32,6 +47,8 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
   keyFeaturesImage,
   howItWorks,
   benefits,
+  caseStudies,
+  faqItems,
 }) => {
   return (
     <div className="min-h-screen flex flex-col">
@@ -55,9 +72,11 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
               <div className="md:w-1/2">
                 <h2 className="text-2xl font-bold mb-4">{title}</h2>
                 <p className="text-gray-700 mb-6">{description}</p>
-                <Button className="bg-adrig-blue text-white hover:bg-blue-900 transition-colors">
-                  Request a Consultation
-                </Button>
+                <Link to="/contact">
+                  <Button className="bg-adrig-blue text-white hover:bg-blue-900 transition-colors">
+                    Request a Consultation
+                  </Button>
+                </Link>
               </div>
               
               <div className="md:w-1/2">
@@ -130,9 +149,11 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
                   ))}
                 </div>
                 
-                <Button variant="outline" className="mt-6 border-adrig-blue text-adrig-blue hover:bg-adrig-blue hover:text-white">
-                  Learn More <ArrowRight size={16} className="ml-2" />
-                </Button>
+                <Link to="/contact">
+                  <Button variant="outline" className="mt-6 border-adrig-blue text-adrig-blue hover:bg-adrig-blue hover:text-white">
+                    Learn More <ArrowRight size={16} className="ml-2" />
+                  </Button>
+                </Link>
               </div>
               
               <div className="md:w-1/2">
@@ -146,6 +167,29 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
             </div>
           </div>
         </section>
+
+        {/* Case Studies Section */}
+        {caseStudies && caseStudies.length > 0 && (
+          <section className="py-12 bg-gray-50">
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl font-bold mb-8 text-center">Success Stories</h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {caseStudies.map((study, index) => (
+                  <Card key={index} className="shadow-md hover:shadow-lg transition-shadow h-full">
+                    <CardContent className="p-6 flex flex-col h-full">
+                      <h3 className="text-lg font-semibold mb-3">{study.title}</h3>
+                      <p className="text-gray-600 mb-4 flex-grow">{study.description}</p>
+                      <div className="bg-adrig-blue/5 p-4 rounded-md border-l-4 border-adrig-blue">
+                        <p className="text-sm font-medium text-gray-700">Results:</p>
+                        <p className="text-adrig-blue font-medium">{study.results}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
         
         <section className="py-12 bg-gray-50">
           <div className="container mx-auto px-4 text-center">
@@ -184,6 +228,29 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
             </div>
           </div>
         </section>
+
+        {/* FAQ Section */}
+        {faqItems && faqItems.length > 0 && (
+          <section className="py-12 bg-white">
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
+              <div className="max-w-3xl mx-auto">
+                <Accordion type="single" collapsible className="w-full">
+                  {faqItems.map((faq, index) => (
+                    <AccordionItem key={index} value={`item-${index}`}>
+                      <AccordionTrigger className="text-left text-lg font-medium">
+                        {faq.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-600">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            </div>
+          </section>
+        )}
         
         <section className="py-12 bg-adrig-blue text-white">
           <div className="container mx-auto px-4 text-center">
@@ -191,9 +258,11 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
             <p className="text-lg mb-6 max-w-2xl mx-auto text-white/90">
               Contact our team today to explore how our {title} services can help you achieve your business goals.
             </p>
-            <Button className="bg-white text-adrig-blue hover:bg-gray-100 transition-colors px-6 py-2 text-base font-semibold">
-              Schedule a Consultation
-            </Button>
+            <Link to="/contact">
+              <Button className="bg-white text-adrig-blue hover:bg-gray-100 transition-colors px-6 py-2 text-base font-semibold">
+                Schedule a Consultation
+              </Button>
+            </Link>
           </div>
         </section>
       </main>

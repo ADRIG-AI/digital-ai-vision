@@ -20,6 +20,37 @@ const AIAutomation = () => {
         { text: "Cost-Effective: Save operational costs by reducing labor-intensive tasks." },
         { text: "Adaptable Solutions: Our AI systems learn and improve over time, adapting to changing needs." }
       ]}
+      caseStudies={[
+        {
+          title: "Manufacturing Quality Control Transformation",
+          description: "Implemented an AI vision system that automatically inspects products on the assembly line, detecting defects with greater accuracy than human inspectors.",
+          results: "Reduced defect escape rate by 94% and increased inspection throughput by 300%."
+        },
+        {
+          title: "Customer Service Email Automation",
+          description: "Deployed an AI system that categorizes, prioritizes, and routes customer emails to the appropriate department, with automated responses for common queries.",
+          results: "Decreased response time by 76% and enabled staff to handle 3x the previous volume of inquiries."
+        },
+        {
+          title: "Sales Lead Qualification Automation",
+          description: "Created an AI system that analyzes incoming leads, scores them based on likelihood to convert, and routes them to appropriate sales representatives.",
+          results: "Increased conversion rate by 42% and reduced sales team time spent on unqualified leads by 68%."
+        }
+      ]}
+      faqItems={[
+        {
+          question: "How does AI automation differ from traditional automation?",
+          answer: "Traditional automation follows fixed rules and can only handle structured data and predictable scenarios. AI automation uses machine learning to adapt to new situations, handle unstructured data, make decisions based on patterns, and improve over time through experience."
+        },
+        {
+          question: "How quickly can we expect to see ROI from implementing AI automation?",
+          answer: "Most of our clients see positive ROI within 3-6 months of implementation. Simple processes may show returns even faster, while more complex transformations might take longer but typically deliver greater long-term value."
+        },
+        {
+          question: "Will AI automation replace our employees?",
+          answer: "Our goal is to augment human capabilities, not replace them. AI automation handles repetitive, time-consuming tasks, allowing your team to focus on creative, strategic work that requires human judgment and empathy. Most clients find their teams become more productive and satisfied when freed from mundane tasks."
+        }
+      ]}
     />
   );
 };
