@@ -1,43 +1,48 @@
 
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const services = [
   {
     title: 'Chatbot Development',
-    description: 'We develop intelligent chatbots that leverage advanced NLP to elevate customer interactions and streamline your business processes.',
-    image: '/lovable-uploads/corporate-dashboard.jpg',
+    description: 'AI-powered chatbots that deliver exceptional customer experiences',
+    image: '/lovable-uploads/ai-development.jpg',
+    icon: '/lovable-uploads/a15df3d0-709c-4fc5-bfe4-46ddcdd3b35f.png',
     path: '/services/chatbot-development'
   },
   {
     title: 'Content Creation',
-    description: 'Our content creation solutions effortlessly generate high-quality, engaging content according to your brand\'s guidelines to captivate your audience.',
+    description: 'Automated content generation that adheres to your brand guidelines',
     image: '/lovable-uploads/corporate-meeting.jpg',
+    icon: '/lovable-uploads/a15df3d0-709c-4fc5-bfe4-46ddcdd3b35f.png',
     path: '/services/ai-automation'
   },
   {
     title: 'Workflow Automations',
-    description: 'Over 100+ automations to streamline your operations, improve efficiency and reduce costs with our custom AI solutions.',
+    description: 'Over 100+ automations to streamline operations and reduce costs',
     image: '/lovable-uploads/workflow-automation.jpg',
+    icon: '/lovable-uploads/a15df3d0-709c-4fc5-bfe4-46ddcdd3b35f.png',
     path: '/services/workflow-automations'
   },
   {
     title: 'Data Analysis',
-    description: 'Powerful data analysis tools to help you make better decisions and gain insights from your data.',
+    description: 'Gain valuable insights through our advanced data analysis tools',
     image: '/lovable-uploads/data-analytics.jpg',
+    icon: '/lovable-uploads/a15df3d0-709c-4fc5-bfe4-46ddcdd3b35f.png',
     path: '/services/data-analysis'
   },
   {
     title: 'LLM Development',
-    description: 'We create powerful Large Language Models tailored to your specific business needs and industry.',
+    description: 'Custom Large Language Models built for your specific industry needs',
     image: '/lovable-uploads/ai-development.jpg',
+    icon: '/lovable-uploads/a15df3d0-709c-4fc5-bfe4-46ddcdd3b35f.png',
     path: '/services/llm-development'
   },
   {
     title: 'AI Consulting',
-    description: 'Expert guidance for AI-powered transformation to help you navigate the complex world of artificial intelligence.',
+    description: 'Expert guidance to navigate the complex world of AI implementation',
     image: '/lovable-uploads/ai-consulting.jpg',
+    icon: '/lovable-uploads/a15df3d0-709c-4fc5-bfe4-46ddcdd3b35f.png',
     path: '/services/ai-consulting'
   }
 ];
@@ -50,35 +55,31 @@ const ServicesSection = () => {
           What <span className="text-adrig-blue">we do</span>
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <Card 
+            <Link 
+              to={service.path} 
               key={index} 
-              className="bg-gray-900 border-0 overflow-hidden rounded-xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+              className="bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-lg"
             >
-              <div className="h-48 bg-gray-800 overflow-hidden">
-                {service.image ? (
-                  <img 
-                    src={service.image} 
-                    alt={service.title} 
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-800 flex items-center justify-center">
-                    <span className="text-adrig-blue">Service Preview</span>
-                  </div>
-                )}
+              <div className="p-8 flex items-center justify-center">
+                <img 
+                  src={service.icon} 
+                  alt={service.title} 
+                  className="w-24 h-24 object-contain"
+                />
               </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-white">{service.title}</h3>
-                <p className="text-gray-300 mb-4">{service.description}</p>
-                <Link to={service.path}>
-                  <Button className="bg-adrig-blue text-white hover:bg-blue-700">
-                    Learn More
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+              <div className="bg-white p-6 border-t border-gray-200">
+                <h3 className="text-xl font-bold mb-2">{service.title}</h3>
+                <p className="text-gray-600 mb-2">{service.description}</p>
+                <span className="text-adrig-blue font-medium inline-flex items-center">
+                  Learn more 
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
