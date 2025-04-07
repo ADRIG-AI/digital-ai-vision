@@ -94,7 +94,7 @@ const servicesData = [
 
 const Services = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="md:w-1/2">
       <Header />
       
       <main className="flex-grow pt-20">
