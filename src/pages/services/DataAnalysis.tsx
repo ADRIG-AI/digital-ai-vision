@@ -1,24 +1,22 @@
 
-import React from 'react';
-import ServicePageTemplate from '@/components/ServicePageTemplate';
 import { Database } from 'lucide-react';
+import ServicePageTemplate from '@/components/ServicePageTemplate';
 
 const DataAnalysis = () => {
   return (
     <ServicePageTemplate
       title="Data Analysis"
-      subtitle="Transform raw data into actionable business intelligence"
-      description="Our data analysis services help businesses extract valuable insights from their data assets. We combine advanced analytics, machine learning, and visualization techniques to identify patterns, predict trends, and support data-driven decision making across your organization."
+      subtitle="Make Smarter Decisions with Real-Time Insights"
+      description="Data is the new currency, but raw data is useless without actionable insights. Our AI-powered data analytics transforms vast amounts of information into meaningful reports and predictions, enabling your business to make informed decisions faster."
       icon={Database}
-      imageUrl="/lovable-uploads/data-analytics.jpg"
-      howItWorks="We begin by assessing your data sources and business questions. Our team then applies statistical analysis, machine learning, and AI techniques to extract meaningful insights. We deliver these insights through intuitive dashboards and reports designed for decision-makers at all levels of your organization."
+      imageUrl="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1400"
+      howItWorks="Our system collects, processes, and visualizes data from multiple sources, helping businesses track trends, analyze risks, and improve decision-making. We implement sophisticated algorithms that identify patterns and correlations human analysts might miss, giving you a competitive edge."
       benefits={[
-        { text: "Discover hidden patterns and opportunities in your business data" },
-        { text: "Make confident decisions backed by empirical evidence" },
-        { text: "Predict future trends and prepare for market changes" },
-        { text: "Identify the root causes of business problems" },
-        { text: "Optimize resource allocation based on data-driven insights" },
-        { text: "Track KPIs and performance metrics in real-time" }
+        { text: "Stay Ahead: Get real-time insights to predict market trends." },
+        { text: "Accurate Data: Obtain the most up-to-date, precise analytics." },
+        { text: "Data-Driven Growth: Make informed decisions backed by AI." },
+        { text: "Custom Reports: Tailored dashboards that match your business needs." },
+        { text: "Competitive Intelligence: Understand your market position with clarity." }
       ]}
     />
   );

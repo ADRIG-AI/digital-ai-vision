@@ -14,10 +14,3 @@ export interface ServiceType {
   href: string;
   subcategories: SubcategoryType[];
 }
-
-export interface ServiceCategoryProps {
-  title: string;
-  icon: LucideIcon;
-  isActive: boolean;
-  onMouseEnter: () => void;
-}

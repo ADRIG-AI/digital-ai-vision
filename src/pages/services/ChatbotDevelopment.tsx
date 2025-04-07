@@ -1,24 +1,22 @@
 
-import React from 'react';
-import ServicePageTemplate from '@/components/ServicePageTemplate';
 import { MessageCircle } from 'lucide-react';
+import ServicePageTemplate from '@/components/ServicePageTemplate';
 
 const ChatbotDevelopment = () => {
   return (
     <ServicePageTemplate
       title="Chatbot Development"
-      subtitle="Intelligent conversational AI for exceptional customer experiences"
-      description="Our chatbot development services create intelligent virtual assistants that understand natural language, learn from interactions, and provide helpful responses to customer inquiries. We build chatbots that represent your brand voice while efficiently handling customer support, sales assistance, and information requests."
+      subtitle="Intelligent Chatbots That Engage & Convert"
+      description="In today's digital-first world, customer experience is everything. Our chatbots don't just answer queries—they understand, respond, and learn from interactions, creating natural conversations that enhance customer satisfaction and drive conversions."
       icon={MessageCircle}
-      imageUrl="/lovable-uploads/corporate-meeting.jpg"
-      howItWorks="We design conversational flows based on your customers' needs and your business processes. Our AI engineers then develop and train natural language understanding models that can interpret customer intent and deliver appropriate responses. We integrate with your existing systems and provide ongoing optimization."
+      imageUrl="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=1400" 
+      howItWorks="We build AI-powered chatbots that provide instant support, automate responses, and handle multiple customer interactions simultaneously. Our chatbots integrate with your existing systems and can be deployed across websites, mobile apps, and messaging platforms for a unified customer experience."
       benefits={[
-        { text: "Provide 24/7 customer support without staffing constraints" },
-        { text: "Reduce support costs while improving response times" },
-        { text: "Handle multiple customer inquiries simultaneously" },
-        { text: "Collect valuable customer insights from conversations" },
-        { text: "Ensure consistent communication with standardized responses" },
-        { text: "Seamlessly escalate to human agents when needed" }
+        { text: "24/7 Availability: Never miss a customer query, even outside business hours." },
+        { text: "Personalized Responses: AI learns from conversations to improve interactions." },
+        { text: "Lead Generation: Capture leads through automated engagement." },
+        { text: "Cost Savings: Reduce the need for large support teams." },
+        { text: "Omni-Channel Experience: Consistent customer service across all platforms." }
       ]}
     />
   );
