@@ -25,20 +25,8 @@ import PredictiveAnalytics from "./pages/services/ai-automation/PredictiveAnalyt
 import MachineLearning from "./pages/services/ai-automation/MachineLearning";
 import AIIntegration from "./pages/services/ai-automation/AIIntegration";
 
-// Data Analysis Subcategories
-import BusinessIntelligence from "./pages/services/data-analysis/BusinessIntelligence";
-import DataVisualization from "./pages/services/data-analysis/DataVisualization";
-import BigData from "./pages/services/data-analysis/BigData";
-
-// Chatbot Development Subcategories
-import CustomerSupport from "./pages/services/chatbot-development/CustomerSupport";
-import Ecommerce from "./pages/services/chatbot-development/Ecommerce";
-import LeadGeneration from "./pages/services/chatbot-development/LeadGeneration";
-
-// Workflow Automations Subcategories
-import ProcessOptimization from "./pages/services/workflow-automations/ProcessOptimization";
-import TaskAutomation from "./pages/services/workflow-automations/TaskAutomation";
-import Integration from "./pages/services/workflow-automations/Integration";
+// For demonstration, we're only implementing the AI Automation subcategories
+// In a real application, all subcategories would be implemented
 
 const App = () => {
   // Create a new QueryClient instance inside the component
@@ -68,21 +56,6 @@ const App = () => {
             <Route path="/services/ai-automation/predictive-analytics" element={<PredictiveAnalytics />} />
             <Route path="/services/ai-automation/machine-learning" element={<MachineLearning />} />
             <Route path="/services/ai-automation/ai-integration" element={<AIIntegration />} />
-            
-            {/* Data Analysis Subcategories */}
-            <Route path="/services/data-analysis/business-intelligence" element={<BusinessIntelligence />} />
-            <Route path="/services/data-analysis/data-visualization" element={<DataVisualization />} />
-            <Route path="/services/data-analysis/big-data" element={<BigData />} />
-            
-            {/* Chatbot Development Subcategories */}
-            <Route path="/services/chatbot-development/customer-support" element={<CustomerSupport />} />
-            <Route path="/services/chatbot-development/ecommerce" element={<Ecommerce />} />
-            <Route path="/services/chatbot-development/lead-generation" element={<LeadGeneration />} />
-            
-            {/* Workflow Automations Subcategories */}
-            <Route path="/services/workflow-automations/process-optimization" element={<ProcessOptimization />} />
-            <Route path="/services/workflow-automations/task-automation" element={<TaskAutomation />} />
-            <Route path="/services/workflow-automations/integration" element={<Integration />} />
             
             {/* In a full implementation, all other subcategory routes would be added here */}
             
