@@ -1,24 +1,22 @@
 
-import React from 'react';
-import ServicePageTemplate from '@/components/ServicePageTemplate';
 import { Lightbulb } from 'lucide-react';
+import ServicePageTemplate from '@/components/ServicePageTemplate';
 
 const AIConsulting = () => {
   return (
     <ServicePageTemplate
       title="AI Consulting"
-      subtitle="Expert guidance for AI-powered business transformation"
-      description="Our AI consulting services help businesses navigate the complex landscape of artificial intelligence technology. We work with you to identify the most promising AI opportunities, develop a strategic roadmap, and guide implementation for maximum business impact."
+      subtitle="Your AI Roadmap to Success"
+      description="Not sure how AI can benefit your business? Our AI consulting services help you identify opportunities, implement strategies, and maximize AI adoption. We provide expert guidance at every step, from initial assessment to full implementation of AI solutions."
       icon={Lightbulb}
-      imageUrl="/lovable-uploads/ai-consulting.jpg"
-      howItWorks="Our experienced consultants begin with a comprehensive assessment of your business goals and challenges. We then identify AI opportunities that align with your strategic objectives. Our team creates a detailed implementation plan and provides ongoing guidance to ensure successful execution and long-term value."
+      imageUrl="https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?auto=format&fit=crop&q=80&w=1400"
+      howItWorks="Our experts assess your business, recommend AI solutions, and guide you through implementation, ensuring a seamless transition. We analyze your operations, identify high-impact areas for AI integration, and create a strategic roadmap that aligns with your business goals and technical capabilities."
       benefits={[
-        { text: "Clearly defined AI strategy aligned with business objectives" },
-        { text: "Prioritized AI initiatives based on impact and feasibility" },
-        { text: "Expert guidance on technology selection and implementation" },
-        { text: "Risk mitigation and ethical AI use frameworks" },
-        { text: "Knowledge transfer to build internal AI capabilities" },
-        { text: "Ongoing support to adapt to evolving AI technologies" }
+        { text: "Custom AI Strategy: Tailored AI solutions based on your business needs." },
+        { text: "Industry Expertise: Insights from AI specialists with real-world experience." },
+        { text: "Cost-Efficient Implementation: Optimize AI adoption without unnecessary expenses." },
+        { text: "Future-Proof Your Business: Stay ahead with AI-driven innovation." },
+        { text: "Comprehensive Training: Empower your team with the skills to leverage AI effectively." }
       ]}
     />
   );
