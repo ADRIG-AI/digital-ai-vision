@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+import { HelmetProvider } from "react-helmet-async";
 
 import Index from "./pages/Index";
 import Services from "./pages/Services";
@@ -34,35 +35,37 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            
-            {/* Service Pages */}
-            <Route path="/services/ai-automation" element={<AIAutomation />} />
-            <Route path="/services/data-analysis" element={<DataAnalysis />} />
-            <Route path="/services/chatbot-development" element={<ChatbotDevelopment />} />
-            <Route path="/services/workflow-automations" element={<WorkflowAutomations />} />
-            <Route path="/services/llm-development" element={<LLMDevelopment />} />
-            <Route path="/services/ai-consulting" element={<AIConsulting />} />
-            
-            {/* AI Automation Subcategories */}
-            <Route path="/services/ai-automation/predictive-analytics" element={<PredictiveAnalytics />} />
-            <Route path="/services/ai-automation/machine-learning" element={<MachineLearning />} />
-            <Route path="/services/ai-automation/ai-integration" element={<AIIntegration />} />
-            
-            {/* In a full implementation, all other subcategory routes would be added here */}
-            
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <HelmetProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              
+              {/* Service Pages */}
+              <Route path="/services/ai-automation" element={<AIAutomation />} />
+              <Route path="/services/data-analysis" element={<DataAnalysis />} />
+              <Route path="/services/chatbot-development" element={<ChatbotDevelopment />} />
+              <Route path="/services/workflow-automations" element={<WorkflowAutomations />} />
+              <Route path="/services/llm-development" element={<LLMDevelopment />} />
+              <Route path="/services/ai-consulting" element={<AIConsulting />} />
+              
+              {/* AI Automation Subcategories */}
+              <Route path="/services/ai-automation/predictive-analytics" element={<PredictiveAnalytics />} />
+              <Route path="/services/ai-automation/machine-learning" element={<MachineLearning />} />
+              <Route path="/services/ai-automation/ai-integration" element={<AIIntegration />} />
+              
+              {/* In a full implementation, all other subcategory routes would be added here */}
+              
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </HelmetProvider>
     </QueryClientProvider>
   );
 };

@@ -1,14 +1,21 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://digital-ai-vision.com/sitemap.xml
+
+# Priority pages
+User-agent: *
+Allow: /$
+Allow: /services$
+Allow: /about$
+Allow: /contact$
+
+# Service pages
+User-agent: *
+Allow: /services/ai-automation$
+Allow: /services/data-analysis$
+Allow: /services/chatbot-development$
+Allow: /services/workflow-automations$
+Allow: /services/llm-development$
+Allow: /services/ai-consulting$
