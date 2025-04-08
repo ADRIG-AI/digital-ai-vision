@@ -1,0 +1,24 @@
+{
+  "title": "The process",
+  "highlight": "process",
+  "steps": [
+    {
+      "number": "01",
+      "title": "Analyze",
+      "description": "We analyze your workflows...",
+      "icon": "Search"
+    },
+    {
+      "number": "02",
+      "title": "Build",
+      "description": "We develop custom solutions...",
+      "icon": "Code"
+    },
+    {
+      "number": "03",
+      "title": "Maintain",
+      "description": "We provide ongoing support...",
+      "icon": "Cog"
+    }
+  ]
+}

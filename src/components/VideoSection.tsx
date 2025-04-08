@@ -1,18 +1,50 @@
 
 import { Button } from "./ui/button";
 import { Play } from "lucide-react";
-import { useState } from "react";
-
+import { useState,useEffect } from "react";
+type LandingContent = {
+  title: string;
+  subtitle: string; 
+  videotitle: string;
+  time:string;
+  firstcardtitle:string;
+  firstcardsubtitle:string;
+  secondcardtitle:string;
+  secondcardsubtitle:string;
+  thirdcardtitle:string;
+  thirdcardsubtitle:string;
+};
 const VideoSection = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+   const [content, setContent] = useState<LandingContent | null>(null);
+    const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        fetch("/content/landingpage/VideoSection.json")
+          .then((res) => res.json())
+          .then((data) => {
+            setContent(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.error("Failed to load landing page content:", err);
+            setLoading(false);
+          });
+      }, []);
+  const [isPlaying, setIsPlaying] = useState(false);
+  if (loading || !content) {
+    return (
+      <section className="min-h-screen flex items-center justify-center">
+        <p className="text-xl text-gray-500">Loading...</p>
+      </section>
+    );
+  }
   return (
     <section className="py-16 bg-gradient-to-br from-blue-50 to-slate-100">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">See Our Solutions in Action</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{content.title}</h2>
           <p className="text-lg text-gray-600 mb-8">
-            Discover how our cutting-edge AI technologies transform businesses and drive growth.
+            {content.subtitle}
           </p>
         </div>
         
@@ -35,8 +67,8 @@ const VideoSection = () => {
                 </Button>
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent text-white">
-                <h3 className="text-2xl font-bold">Digital AI Vision: Transforming Business Through Intelligence</h3>
-                <p className="text-sm mt-2">3:24 min</p>
+                <h3 className="text-2xl font-bold">{content.videotitle}</h3>
+                <p className="text-sm mt-2">{content.time}</p>
               </div>
             </div>
           ) : (
@@ -62,8 +94,8 @@ const VideoSection = () => {
               alt="AI Technology" 
               className="w-full h-40 object-cover rounded-md mb-4"
             />
-            <h3 className="text-xl font-semibold mb-2">Cutting-Edge Technology</h3>
-            <p className="text-gray-600">Our solutions leverage the latest advancements in AI and machine learning.</p>
+            <h3 className="text-xl font-semibold mb-2">{content.firstcardtitle}</h3>
+            <p className="text-gray-600">{content.firstcardsubtitle}</p>
           </div>
           
           <div className="bg-white p-6 rounded-lg shadow-md">
@@ -72,8 +104,8 @@ const VideoSection = () => {
               alt="Expert Team" 
               className="w-full h-40 object-cover rounded-md mb-4"
             />
-            <h3 className="text-xl font-semibold mb-2">Expert Teams</h3>
-            <p className="text-gray-600">Our specialists bring decades of combined experience in AI implementation.</p>
+            <h3 className="text-xl font-semibold mb-2">{content.secondcardtitle}</h3>
+            <p className="text-gray-600">{content.secondcardsubtitle}</p>
           </div>
           
           <div className="bg-white p-6 rounded-lg shadow-md">
@@ -82,8 +114,8 @@ const VideoSection = () => {
               alt="Business Results" 
               className="w-full h-40 object-cover rounded-md mb-4"
             />
-            <h3 className="text-xl font-semibold mb-2">Measurable Results</h3>
-            <p className="text-gray-600">Our clients see tangible improvements in efficiency and revenue.</p>
+            <h3 className="text-xl font-semibold mb-2">{content.thirdcardtitle}</h3>
+            <p className="text-gray-600">{content.thirdcardsubtitle}</p>
           </div>
         </div>
       </div>

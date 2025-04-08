@@ -1,0 +1,78 @@
+
+
+local_backend: true
+backend:
+  name: test-repo
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "landing_page"
+    label: "Landing Page Sections"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - file: "content/landingpage/HeroSection.json"
+        label: "Hero Section"
+        name: "hero_section"  # Unique name
+        format: "json"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Subtitle", name: "subtitle", widget: "string" }
+          - { label: "Button Text", name: "button", widget: "string" }
+         
+
+      - file: "content/landingpage/VideoSection.json"
+        label: "Video Section"  # Unique label
+        name: "video_section"  # Unique name
+        format: "json"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Subtitle", name: "subtitle", widget: "string" }
+          - {label: "Video title",name: "videotitle",widget: "string"}
+          - {label: "Time",name: "time",widget: "string"}
+          - {label: "Cardtitle-1",name: "firstcardtitle",widget: "string"}
+          - {label: "Cardsubtitle-1",name: "firstcardsubtitle",widget: "string"}
+          - {label: "Cardtitle-2",name: "secondcardtitle",widget: "string"}
+          - {label: "Cardsubtitle-2",name: "secondcardsubtitle",widget: "string"}
+          - {label: "Cardtitle-3",name: "thirdcardtitle",widget: "string"}
+          - {label: "Cardsubtitle-3",name: "thirdcardsubtitle",widget: "string"}
+          
+
+   
+      - file: "content/landingpage/ServiceSection.json"
+        label: "Service Section"
+        name: "service_section"
+        format: "json"
+        fields:
+          - { label: "Section Title", name: "title", widget: "string", default: "What we do" }
+          - { label: "Highlight Text", name: "highlight", widget: "string", default: "we do" }
+          - label: "Services"
+            name: "services"
+            widget: "list"
+            fields:
+              - { label: "Service Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "Path", name: "path", widget: "string" }
+      
+
+
+
+
+      - file: "content/landingpage/ProcessSection.json"
+        label: "Process Section"
+        name: "process_section"
+        fields:
+          - { label: "Section Title", name: "title", widget: "string", default: "The process" }
+          - { label: "Highlight Text", name: "highlight", widget: "string", default: "process" }
+          - label: "Process Steps"
+            name: "steps"
+            widget: "list"
+            fields:
+              - { label: "Step Number", name: "number", widget: "select", options: ["01", "02", "03"], default: "01" }
+              - { label: "Step Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Icon", name: "icon", widget: "select", options: ["Search", "Code", "Cog"], default: "Search" }
