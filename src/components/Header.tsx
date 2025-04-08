@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogIn, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ServicesDropdown from './ServicesDropdown';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -84,11 +84,18 @@ const Header = () => {
               Contact
             </Link>
             
-            <Link to="/contact">
-              <Button variant="default" className="bg-adrig-blue hover:bg-blue-700">
-                Get Started
-              </Button>
-            </Link>
+            <div className="flex items-center space-x-3">
+              <Link to="/login">
+                <Button variant="outline" className="border-adrig-blue text-adrig-blue hover:bg-adrig-blue hover:text-white">
+                  <LogIn size={18} className="mr-1" /> Login
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button variant="default" className="bg-adrig-blue hover:bg-blue-700">
+                  <UserPlus size={18} className="mr-1" /> Sign Up
+                </Button>
+              </Link>
+            </div>
           </nav>
           
           {/* Mobile Menu Button */}
@@ -180,10 +187,15 @@ const Header = () => {
                 Contact
               </Link>
               
-              <div className="pt-2">
-                <Link to="/contact" className="block">
+              <div className="pt-2 flex flex-col space-y-3">
+                <Link to="/login">
+                  <Button variant="outline" className="w-full border-adrig-blue text-adrig-blue hover:bg-adrig-blue hover:text-white">
+                    <LogIn size={18} className="mr-1" /> Login
+                  </Button>
+                </Link>
+                <Link to="/signup">
                   <Button variant="default" className="w-full bg-adrig-blue hover:bg-blue-700">
-                    Get Started
+                    <UserPlus size={18} className="mr-1" /> Sign Up
                   </Button>
                 </Link>
               </div>
