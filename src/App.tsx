@@ -12,6 +12,8 @@ import Services from "./pages/Services";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 
 // Service Pages
 import AIAutomation from "./pages/services/AIAutomation";
@@ -26,8 +28,30 @@ import PredictiveAnalytics from "./pages/services/ai-automation/PredictiveAnalyt
 import MachineLearning from "./pages/services/ai-automation/MachineLearning";
 import AIIntegration from "./pages/services/ai-automation/AIIntegration";
 
-// For demonstration, we're only implementing the AI Automation subcategories
-// In a real application, all subcategories would be implemented
+// Data Analysis Subcategories
+import BusinessIntelligence from "./pages/services/data-analysis/BusinessIntelligence";
+import DataVisualization from "./pages/services/data-analysis/DataVisualization";
+import BigData from "./pages/services/data-analysis/BigData";
+
+// Chatbot Development Subcategories
+import CustomerSupport from "./pages/services/chatbot-development/CustomerSupport";
+import Ecommerce from "./pages/services/chatbot-development/Ecommerce";
+import LeadGeneration from "./pages/services/chatbot-development/LeadGeneration";
+
+// Workflow Automations Subcategories
+import ProcessOptimization from "./pages/services/workflow-automations/ProcessOptimization";
+import TaskAutomation from "./pages/services/workflow-automations/TaskAutomation";
+import Integration from "./pages/services/workflow-automations/Integration";
+
+// LLM Development Subcategories
+import CustomTraining from "./pages/services/llm-development/CustomTraining";
+import LanguageUnderstanding from "./pages/services/llm-development/LanguageUnderstanding";
+import ContentGeneration from "./pages/services/llm-development/ContentGeneration";
+
+// AI Consulting Subcategories
+import Strategy from "./pages/services/ai-consulting/Strategy";
+import Assessment from "./pages/services/ai-consulting/Assessment";
+import Implementation from "./pages/services/ai-consulting/Implementation";
 
 const App = () => {
   // Create a new QueryClient instance inside the component
@@ -45,6 +69,8 @@ const App = () => {
               <Route path="/services" element={<Services />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               
               {/* Service Pages */}
               <Route path="/services/ai-automation" element={<AIAutomation />} />
@@ -59,7 +85,30 @@ const App = () => {
               <Route path="/services/ai-automation/machine-learning" element={<MachineLearning />} />
               <Route path="/services/ai-automation/ai-integration" element={<AIIntegration />} />
               
-              {/* In a full implementation, all other subcategory routes would be added here */}
+              {/* Data Analysis Subcategories */}
+              <Route path="/services/data-analysis/business-intelligence" element={<BusinessIntelligence />} />
+              <Route path="/services/data-analysis/data-visualization" element={<DataVisualization />} />
+              <Route path="/services/data-analysis/big-data" element={<BigData />} />
+              
+              {/* Chatbot Development Subcategories */}
+              <Route path="/services/chatbot-development/customer-support" element={<CustomerSupport />} />
+              <Route path="/services/chatbot-development/ecommerce" element={<Ecommerce />} />
+              <Route path="/services/chatbot-development/lead-generation" element={<LeadGeneration />} />
+              
+              {/* Workflow Automations Subcategories */}
+              <Route path="/services/workflow-automations/process-optimization" element={<ProcessOptimization />} />
+              <Route path="/services/workflow-automations/task-automation" element={<TaskAutomation />} />
+              <Route path="/services/workflow-automations/integration" element={<Integration />} />
+              
+              {/* LLM Development Subcategories */}
+              <Route path="/services/llm-development/custom-training" element={<CustomTraining />} />
+              <Route path="/services/llm-development/language-understanding" element={<LanguageUnderstanding />} />
+              <Route path="/services/llm-development/content-generation" element={<ContentGeneration />} />
+              
+              {/* AI Consulting Subcategories */}
+              <Route path="/services/ai-consulting/strategy" element={<Strategy />} />
+              <Route path="/services/ai-consulting/assessment" element={<Assessment />} />
+              <Route path="/services/ai-consulting/implementation" element={<Implementation />} />
               
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -1,10 +1,11 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Check } from 'lucide-react';
+import { ChevronRight, Check, CheckCircle, UserCheck, LineChart, Lightbulb } from 'lucide-react';
 import Header from './Header';
 import Footer from './Footer';
 import { Button } from './ui/button';
+import { Card, CardContent } from './ui/card';
 
 interface SubcategoryTemplateProps {
   title: string;
@@ -111,17 +112,54 @@ const SubcategoryTemplate: React.FC<SubcategoryTemplateProps> = ({
           </div>
         </section>
 
-        {/* Use Cases */}
-        <section className="bg-adrig-blue py-16 text-white">
+        {/* Use Cases - Redesigned Section */}
+        <section className="bg-adrig-blue py-16">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-10 text-center">Use Cases</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <h2 className="text-3xl font-bold mb-10 text-center text-white">Success Stories</h2>
+            
+            <div className="grid md:grid-cols-2 gap-6">
               {useCases.map((useCase, index) => (
-                <div key={index} className="border border-white/20 p-6 rounded-lg bg-adrig-blue/30 hover:bg-adrig-blue/40 transition-colors">
-                  <h3 className="text-xl font-semibold mb-2">Use Case {index + 1}</h3>
-                  <p>{useCase}</p>
-                </div>
+                <Card key={index} className="bg-white/10 backdrop-blur-sm border border-white/20 overflow-hidden hover:transform hover:scale-[1.02] transition-all duration-300">
+                  <CardContent className="p-6">
+                    <div className="flex items-start mb-4">
+                      {index % 3 === 0 && (
+                        <div className="mr-4 p-2 bg-white/10 rounded-full">
+                          <UserCheck className="h-6 w-6 text-white" />
+                        </div>
+                      )}
+                      {index % 3 === 1 && (
+                        <div className="mr-4 p-2 bg-white/10 rounded-full">
+                          <LineChart className="h-6 w-6 text-white" />
+                        </div>
+                      )}
+                      {index % 3 === 2 && (
+                        <div className="mr-4 p-2 bg-white/10 rounded-full">
+                          <Lightbulb className="h-6 w-6 text-white" />
+                        </div>
+                      )}
+                      <div>
+                        <h3 className="text-xl font-semibold mb-2 text-white">Case Study {index + 1}</h3>
+                        <p className="text-white/90 leading-relaxed">{useCase}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6 pt-4 border-t border-white/10">
+                      <div className="flex items-center">
+                        <CheckCircle className="h-5 w-5 text-green-300 mr-2" />
+                        <span className="text-white font-medium">Verified Results</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
+            </div>
+            
+            <div className="mt-10 text-center">
+              <Link to="/contact">
+                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-adrig-blue">
+                  Discuss Your Project
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
