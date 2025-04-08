@@ -54,38 +54,6 @@ const VideoSection = () => {
             </div>
           )}
         </div>
-        
-        <div className="mt-12 grid md:grid-cols-3 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <img 
-              src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=500"
-              alt="AI Technology" 
-              className="w-full h-40 object-cover rounded-md mb-4"
-            />
-            <h3 className="text-xl font-semibold mb-2">Cutting-Edge Technology</h3>
-            <p className="text-gray-600">Our solutions leverage the latest advancements in AI and machine learning.</p>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <img 
-              src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=500"
-              alt="Expert Team" 
-              className="w-full h-40 object-cover rounded-md mb-4"
-            />
-            <h3 className="text-xl font-semibold mb-2">Expert Teams</h3>
-            <p className="text-gray-600">Our specialists bring decades of combined experience in AI implementation.</p>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <img 
-              src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&q=80&w=500"
-              alt="Business Results" 
-              className="w-full h-40 object-cover rounded-md mb-4"
-            />
-            <h3 className="text-xl font-semibold mb-2">Measurable Results</h3>
-            <p className="text-gray-600">Our clients see tangible improvements in efficiency and revenue.</p>
-          </div>
-        </div>
       </div>
     </section>
   );
