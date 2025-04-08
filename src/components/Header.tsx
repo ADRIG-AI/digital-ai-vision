@@ -54,16 +54,7 @@ const Header = () => {
           </Link>
           
           {/* Desktop Navigation */}
-          <nav className={`hidden md:flex items-center space-x-6`}>
-            <Link 
-              to="/"
-              className={`text-adrig-black hover:text-adrig-blue transition-colors ${
-                location.pathname === '/' ? 'font-semibold text-adrig-blue' : ''
-              }`}
-            >
-              Home
-            </Link>
-            
+          <nav className={`hidden md:flex items-center space-x-8`}>
             <ServicesDropdown />
             
             <Link 
@@ -118,14 +109,7 @@ const Header = () => {
             ${isMenuOpen ? 'opacity-100 top-full visible' : 'opacity-0 top-[calc(100%-10px)] invisible'}
           `}>
             <nav className="flex flex-col space-y-4">
-              <Link 
-                to="/"
-                className={`text-adrig-black hover:text-adrig-blue transition-colors py-2 ${
-                  location.pathname === '/' ? 'font-semibold text-adrig-blue' : ''
-                }`}
-              >
-                Home
-              </Link>
+              {/* Removed Home link from mobile menu too */}
               
               <div className="border-b border-gray-200 py-2">
                 <span className="font-medium mb-2 block">Services</span>
