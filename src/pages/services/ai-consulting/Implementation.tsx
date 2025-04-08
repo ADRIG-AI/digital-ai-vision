@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { CheckCircle } from 'lucide-react';
 import SubcategoryTemplate from '@/components/SubcategoryTemplate';
 
 const Implementation = () => {
