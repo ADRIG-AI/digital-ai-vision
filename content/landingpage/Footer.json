@@ -1,0 +1,66 @@
+{
+  "company_info": {
+    "name": "Adrig AI",
+    "description": "Empowering businesses with cutting-edge AI solutions, automation, and scalable SaaS products."
+  },
+  "social_links": [
+    {
+      "platform": "Facebook",
+      "url": "#"
+    },
+    {
+      "platform": "Twitter",
+      "url": "#"
+    },
+    {
+      "platform": "Instagram",
+      "url": "#"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "#"
+    }
+  ],
+  "nav_links": [
+    {
+      "text": "Home",
+      "url": "/"
+    },
+    {
+      "text": "Services",
+      "url": "/services"
+    },
+    {
+      "text": "About Us",
+      "url": "/about"
+    },
+    {
+      "text": "Contact",
+      "url": "/contact"
+    }
+  ],
+  "footer_services": [
+    {
+      "name": "AI Automation",
+      "url": "#"
+    },
+    {
+      "name": "Data Analysis",
+      "url": "#"
+    },
+    {
+      "name": "Chatbot Development",
+      "url": "#"
+    },
+    {
+      "name": "Workflow Automations",
+      "url": "#"
+    }
+  ],
+  "contact_info": {
+    "address": "123 Tech Avenue, Silicon Valley, CA 94043",
+    "phone": "(555) 123-4567",
+    "email": "info@adrigai.com"
+  },
+  "copyright_notice": "Adrig AI Technologies. All rights reserved."
+}
