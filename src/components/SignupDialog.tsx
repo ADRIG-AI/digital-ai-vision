@@ -1,10 +1,9 @@
-
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { UserPlus } from "lucide-react";
-
+import supabase from "../helper/supabaseClient";
 import {
   Dialog,
   DialogContent,
@@ -47,6 +46,7 @@ interface SignupDialogProps {
 
 export const SignupDialog = ({ open, onOpenChange, onSwitchToLogin }: SignupDialogProps) => {
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = React.useState(false);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,18 +58,46 @@ export const SignupDialog = ({ open, onOpenChange, onSwitchToLogin }: SignupDial
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // This is just a placeholder for actual signup logic
-    console.log(values);
-    toast({
-      title: "Account Created",
-      description: `Account created for ${values.name} (${values.email})`,
-    });
-    
-    // Close dialog after submission
-    onOpenChange(false);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          data: {
+            name: values.name,
+          },
+        }
+      });
+  
+      if (error) {
+        toast({
+          title: "Signup Failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        return;
+      }
+  
+      toast({
+        title: "Signup Successful",
+        description: "Account created! Please check your email to confirm your account and then login.",
+      });
+      
+      onOpenChange(false);
+   
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
-
+ 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
@@ -137,9 +165,13 @@ export const SignupDialog = ({ open, onOpenChange, onSwitchToLogin }: SignupDial
               )}
             />
             
-            <Button type="submit" className="w-full bg-adrig-blue hover:bg-blue-700">
+            <Button 
+              type="submit" 
+              className="w-full bg-adrig-blue hover:bg-blue-700"
+              disabled={isLoading}
+            >
               <UserPlus className="mr-2 h-4 w-4" />
-              Create Account
+              {isLoading ? "Creating account..." : "Create Account"}
             </Button>
           </form>
         </Form>
