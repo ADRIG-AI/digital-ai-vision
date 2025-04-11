@@ -5,20 +5,12 @@
   },
   "social_links": [
     {
-      "platform": "Facebook",
-      "url": "#"
-    },
-    {
-      "platform": "Twitter",
-      "url": "#"
-    },
-    {
       "platform": "Instagram",
-      "url": "#"
+      "url": "https://www.instagram.com/adrig.ai/"
     },
     {
       "platform": "LinkedIn",
-      "url": "#"
+      "url": "https://www.linkedin.com/company/adrig"
     }
   ],
   "nav_links": [
@@ -58,9 +50,9 @@
     }
   ],
   "contact_info": {
-    "address": "123 Tech Avenue, Silicon Valley, CA 94043",
-    "phone": "(555) 123-4567",
-    "email": "info@adrigai.com"
+    "address": "kovil, 2, Sangothi amman, 3rd Cross St, Sembakkam, Chennai, Tamil Nadu 600073",
+    "phone": "+91 9942105301",
+    "email": "contact@adrig.co.in"
   },
   "copyright_notice": "Adrig AI Technologies. All rights reserved."
 }

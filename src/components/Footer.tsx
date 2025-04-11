@@ -37,8 +37,6 @@ const Footer = () => {
 
   const getSocialIcon = (platform) => {
     switch(platform) {
-      case 'Facebook': return <Facebook size={20} />;
-      case 'Twitter': return <Twitter size={20} />;
       case 'Instagram': return <Instagram size={20} />;
       case 'LinkedIn': return <Linkedin size={20} />;
       default: return null;
@@ -53,7 +51,7 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4 text-white">{footerData.company_info.name}</h3>
             <p className="text-gray-400 mb-4">{footerData.company_info.description}</p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-2">
               {footerData.social_links.map((item, index) => (
                 <a 
                   key={index}
@@ -115,9 +113,9 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} {footerData.copyright_notice}</p>
-        </div>
+        <div className="border-t border-gray-800 mt-12 pt-8 text-center">
+  <p style={{ color: '#ffffff' }}>&copy; 2025 Adrig AI Technologies. All rights reserved.</p>
+</div>
       </div>
     </footer>
   );

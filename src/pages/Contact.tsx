@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -11,6 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   MapPin,
   Phone,
@@ -30,50 +41,67 @@ interface Message {
   message: string;
   created_at: string;
   status: string;
-  reply: string; // Add this field
-  replied_at: string | null; // Add this field
+  reply: string;
+  replied_at: string | null;
 }
 
-const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    service: "",
-    message: "",
-  });
+const contactFormSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  service: z.string().optional(),
+  message: z.string().min(10, { message: "Message must be at least 10 characters" }),
+});
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const Contact = () => {
+  const { toast } = useToast();
   const [userMessages, setUserMessages] = useState<Message[]>([]);
   const [user, setUser] = useState<any>(null);
   const [loadingMessages, setLoadingMessages] = useState(false);
-  const { toast } = useToast();
 
-  // Check auth state and fetch messages on component mount
+  const form = useForm<z.infer<typeof contactFormSchema>>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      service: "",
+      message: "",
+    },
+  });
+
+  useEffect(() => {
+    if (user) {
+      form.reset({
+        name: user.user_metadata?.name || user.email?.split('@')[0] || '',
+        email: user.email || '',
+        service: '',
+        message: '',
+      });
+      fetchUserMessages(user.email);
+    } else {
+      form.reset({
+        name: "",
+        email: "",
+        service: "",
+        message: "",
+      });
+      setUserMessages([]);
+    }
+  }, [user, form]);
+
   useEffect(() => {
     const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
-
-      if (user) {
-        fetchUserMessages(user.email);
-      }
     };
 
     fetchUser();
 
-    // Set up auth state listener
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === "SIGNED_IN") {
           setUser(session?.user ?? null);
-          if (session?.user) {
-            fetchUserMessages(session.user.email);
-          }
         } else if (event === "SIGNED_OUT") {
           setUser(null);
-          setUserMessages([]);
         }
       }
     );
@@ -108,63 +136,35 @@ const Contact = () => {
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
   const handleServiceChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, service: value }));
+    form.setValue("service", value);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Client-side validation
-    if (
-      !formData.name.trim() ||
-      !formData.email.trim() ||
-      !formData.message.trim()
-    ) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-    setIsSubmitting(true);
-
+  const onSubmit = async (values: z.infer<typeof contactFormSchema>) => {
     try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
       const { error } = await supabase.from("contact_messages").insert({
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        service: formData.service || null,
-        message: formData.message.trim(),
+        name: values.name,
+        email: values.email,
+        service: values.service || null,
+        message: values.message,
         user_id: user?.id || null,
       });
 
       if (error) throw error;
 
       toast({ title: "Success!", description: "Message sent!" });
-      setFormData({ name: "", email: "", service: "", message: "" });
+      form.reset({ ...form.getValues(), service: "", message: "" });
 
-      // Refresh messages using the email from form data
-      fetchUserMessages(formData.email.trim());
+      // Only fetch messages if user is logged in
+      if (user) {
+        fetchUserMessages(values.email);
+      }
     } catch (error) {
       toast({
         title: "Error",
         description: error.message,
         variant: "destructive",
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -188,9 +188,7 @@ const Contact = () => {
         <section className="py-20 bg-white">
           <div className="container mx-auto px-8 lg:px-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-              {/* Left Column - Form and Message History */}
               <div className="space-y-12">
-                {/* Message Form */}
                 <div>
                   <h2 className="text-3xl font-bold mb-6">Send Us a Message</h2>
                   <p className="text-gray-600 mb-8">
@@ -198,141 +196,118 @@ const Contact = () => {
                     get back to you within 24 hours.
                   </p>
 
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                      <label
-                        htmlFor="name"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Name
-                      </label>
-                      <Input
-                        id="name"
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <FormField
+                        control={form.control}
                         name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Your name"
-                        required
-                        className="w-full border-gray-300 rounded-lg focus:ring-adrig-blue focus:border-adrig-blue"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                placeholder="Your name"
+                                readOnly={!!user}
+                                className={user ? "bg-gray-100 cursor-not-allowed" : ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
 
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Email
-                      </label>
-                      <Input
-                        id="email"
+                      <FormField
+                        control={form.control}
                         name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="Your email address"
-                        required
-                        className="w-full border-gray-300 rounded-lg focus:ring-adrig-blue focus:border-adrig-blue"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="email"
+                                placeholder="Your email address"
+                                readOnly={!!user}
+                                className={user ? "bg-gray-100 cursor-not-allowed" : ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
 
-                    <div>
-                      <label
-                        htmlFor="service"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Select a Service
-                      </label>
-                      <Select
-                        value={formData.service}
-                        onValueChange={handleServiceChange}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select a service" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="ai-automation">
-                            AI Automation
-                          </SelectItem>
-                          <SelectItem value="data-analysis">
-                            Data Analysis
-                          </SelectItem>
-                          <SelectItem value="chatbot-development">
-                            Chatbot Development
-                          </SelectItem>
-                          <SelectItem value="workflow-automations">
-                            Workflow Automations
-                          </SelectItem>
-                          <SelectItem value="llm-development">
-                            LLM Development
-                          </SelectItem>
-                          <SelectItem value="ai-consulting">
-                            AI Consulting
-                          </SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                      <FormField
+                        control={form.control}
+                        name="service"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Select a Service</FormLabel>
+                            <Select onValueChange={handleServiceChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a service" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="ai-automation">AI Automation</SelectItem>
+                                <SelectItem value="data-analysis">Data Analysis</SelectItem>
+                                <SelectItem value="chatbot-development">Chatbot Development</SelectItem>
+                                <SelectItem value="workflow-automations">Workflow Automations</SelectItem>
+                                <SelectItem value="llm-development">LLM Development</SelectItem>
+                                <SelectItem value="ai-consulting">AI Consulting</SelectItem>
+                                <SelectItem value="other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    <div>
-                      <label
-                        htmlFor="message"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Message
-                      </label>
-                      <Textarea
-                        id="message"
+                      <FormField
+                        control={form.control}
                         name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        placeholder="Tell us about your project or requirements"
-                        required
-                        className="w-full min-h-[150px] border-gray-300 rounded-lg focus:ring-adrig-blue focus:border-adrig-blue"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Message</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                {...field}
+                                placeholder="Tell us about your project or requirements"
+                                className="min-h-[150px]"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
 
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full bg-adrig-blue text-white hover:bg-blue-700 transition-colors py-6"
-                    >
-                      {isSubmitting ? (
-                        <span className="flex items-center">
-                          <svg
-                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          Sending...
-                        </span>
-                      ) : (
-                        <span className="flex items-center">
-                          <Send className="mr-2" size={18} />
-                          Send Message
-                        </span>
-                      )}
-                    </Button>
-                  </form>
+                      <Button
+                        type="submit"
+                        disabled={form.formState.isSubmitting}
+                        className="w-full bg-adrig-blue hover:bg-blue-700 py-6"
+                      >
+                        {form.formState.isSubmitting ? (
+                          <span className="flex items-center">
+                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Sending...
+                          </span>
+                        ) : (
+                          <span className="flex items-center">
+                            <Send className="mr-2" size={18} />
+                            Send Message
+                          </span>
+                        )}
+                      </Button>
+                    </form>
+                  </Form>
                 </div>
 
-                {/* Message History - Shown when there are messages for the current email */}
-                {userMessages.length > 0 && (
+                {/* Only show message history if user is logged in */}
+                {user && (
                   <div className="bg-gray-50 p-6 rounded-xl">
                     <div className="flex items-center mb-4">
                       <History className="mr-2 text-adrig-blue" size={20} />
@@ -364,7 +339,7 @@ const Contact = () => {
                           ></path>
                         </svg>
                       </div>
-                    ) : (
+                    ) : userMessages.length > 0 ? (
                       <div className="space-y-4">
                         {userMessages.map((message) => (
                           <div
@@ -404,7 +379,6 @@ const Contact = () => {
                               {message.message}
                             </p>
 
-                            {/* Reply section */}
                             {message.reply && (
                               <div className="mt-4 pl-4 border-l-4 border-adrig-blue/30">
                                 <div className="flex items-center text-sm text-gray-500 mb-1">
@@ -436,14 +410,14 @@ const Contact = () => {
                           </div>
                         ))}
                       </div>
+                    ) : (
+                      <p className="text-gray-500 text-center py-4">No messages yet</p>
                     )}
                   </div>
                 )}
               </div>
 
-              {/* Right Column - Contact Information and Map */}
               <div className="flex flex-col space-y-8">
-                {/* Contact Information Card */}
                 <div className="bg-gray-50 p-8 rounded-xl">
                   <h2 className="text-3xl font-bold mb-6">
                     Contact Information
@@ -460,7 +434,9 @@ const Contact = () => {
                           Office Location
                         </h3>
                         <p className="text-gray-600 mt-1">
-                          123 Tech Avenue, Silicon Valley, CA 94043
+                        kovil, 2, Sangothi amman, 3rd Cross St, 
+                        Sembakkam, Chennai, Tamil Nadu 600073
+                       
                         </p>
                       </div>
                     </div>
@@ -472,7 +448,7 @@ const Contact = () => {
                       />
                       <div>
                         <h3 className="font-semibold text-lg">Phone</h3>
-                        <p className="text-gray-600 mt-1">(555) 123-4567</p>
+                        <p className="text-gray-600 mt-1">(+91) 994210530</p>
                       </div>
                     </div>
 
@@ -483,15 +459,13 @@ const Contact = () => {
                       />
                       <div>
                         <h3 className="font-semibold text-lg">Email</h3>
-                        <p className="text-gray-600 mt-1">info@adrigai.com</p>
+                        <p className="text-gray-600 mt-1">contact@adrig.co.in</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Map Placeholder */}
                 <div className="h-96 bg-gray-200 rounded-xl flex-grow">
-                  {/* Map placeholder */}
                   <div className="w-full h-full flex items-center justify-center">
                     <MapPin size={60} className="text-adrig-blue/30" />
                   </div>

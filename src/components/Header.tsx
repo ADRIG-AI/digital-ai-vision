@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, LogIn, UserPlus, LogOut, User } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import ServicesDropdown from './ServicesDropdown';
-import { useIsMobile } from '@/hooks/use-mobile';
-import LoginDialog from './LoginDialog';
-import SignupDialog from './SignupDialog';
-import supabase from '../helper/supabaseClient';
-import { useToast } from '@/hooks/use-toast';
-
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, LogIn, UserPlus, LogOut, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import ServicesDropdown from "./ServicesDropdown";
+import { useIsMobile } from "@/hooks/use-mobile";
+import LoginDialog from "./LoginDialog";
+import SignupDialog from "./SignupDialog";
+import supabase from "../helper/supabaseClient";
+import { useToast } from "@/hooks/use-toast";
+import Adrig_Logo from "../assets/Adrig_logo.png";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,14 +23,17 @@ const Header = () => {
   // Check auth state on mount
   useEffect(() => {
     setLoading(true);
-    
+
     const getSession = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession();
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
         if (error) throw error;
         setUser(session?.user ?? null);
       } catch (error) {
-        console.error('Error getting session:', error);
+        console.error("Error getting session:", error);
       } finally {
         setLoading(false);
       }
@@ -38,7 +41,9 @@ const Header = () => {
 
     getSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
     });
 
@@ -53,8 +58,8 @@ const Header = () => {
   // Toggle scrolled state
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -77,9 +82,11 @@ const Header = () => {
 
   if (loading) {
     return (
-      <header className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
-      }`}>
+      <header
+        className={`fixed w-full z-50 transition-all duration-300 ${
+          isScrolled ? "bg-white shadow-md py-2" : "bg-transparent py-4"
+        }`}
+      >
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <Link to="/" className="flex items-center">
@@ -95,57 +102,70 @@ const Header = () => {
 
   return (
     <>
-      <header className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
-      }`}>
+      <header
+        className={`fixed w-full z-50 transition-all duration-300 ${
+          isScrolled ? "bg-white shadow-md py-2" : "bg-transparent py-4"
+        }`}
+      >
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
-            {/* Logo */}
             <Link to="/" className="flex items-center">
+              <img
+                src={Adrig_Logo}
+                alt="ADRIG Logo"
+                className="h-12 mr-1" 
+              />
               <span className="font-bold text-2xl text-adrig-blue">ADRIG</span>
               <span className="font-bold text-xl text-black ml-1">AI</span>
             </Link>
-            
+
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               <ServicesDropdown />
-              
-              <Link 
+
+              <Link
                 to="/about"
                 className={`text-adrig-black hover:text-adrig-blue transition-colors ${
-                  location.pathname === '/about' ? 'font-semibold text-adrig-blue' : ''
+                  location.pathname === "/about"
+                    ? "font-semibold text-adrig-blue"
+                    : ""
                 }`}
               >
                 About
               </Link>
-              
-              <Link 
+
+              <Link
                 to="/blog"
                 className={`text-adrig-black hover:text-adrig-blue transition-colors ${
-                  location.pathname === '/blog' || location.pathname.startsWith('/blog/') ? 'font-semibold text-adrig-blue' : ''
+                  location.pathname === "/blog" ||
+                  location.pathname.startsWith("/blog/")
+                    ? "font-semibold text-adrig-blue"
+                    : ""
                 }`}
               >
                 Blog
               </Link>
-              
-              <Link 
+
+              <Link
                 to="/contact"
                 className={`text-adrig-black hover:text-adrig-blue transition-colors ${
-                  location.pathname === '/contact' ? 'font-semibold text-adrig-blue' : ''
+                  location.pathname === "/contact"
+                    ? "font-semibold text-adrig-blue"
+                    : ""
                 }`}
               >
                 Contact
               </Link>
-              
+
               <div className="flex items-center space-x-3">
                 {user ? (
                   <div className="flex items-center space-x-2">
                     <span className="flex items-center text-sm">
                       <User size={16} className="mr-1" />
-                      {user.user_metadata?.name || user.email?.split('@')[0]}
+                      {user.user_metadata?.name || user.email?.split("@")[0]}
                     </span>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
                       className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
                       onClick={handleSignOut}
@@ -155,15 +175,15 @@ const Header = () => {
                   </div>
                 ) : (
                   <>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       className="border-adrig-blue text-adrig-blue hover:bg-adrig-blue hover:text-white"
                       onClick={openLoginDialog}
                     >
                       <LogIn size={18} className="mr-1" /> Login
                     </Button>
-                    <Button 
-                      variant="default" 
+                    <Button
+                      variant="default"
                       className="bg-adrig-blue hover:bg-blue-700"
                       onClick={openSignupDialog}
                     >
@@ -173,9 +193,9 @@ const Header = () => {
                 )}
               </div>
             </nav>
-            
+
             {/* Mobile Menu Button */}
-            <button 
+            <button
               className="md:hidden text-adrig-black"
               onClick={toggleMenu}
               aria-label="Toggle menu"
@@ -183,47 +203,78 @@ const Header = () => {
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
-          
+
           {/* Mobile Navigation */}
           {isMobile && (
-            <div className={`
+            <div
+              className={`
               md:hidden bg-white absolute left-0 right-0 px-4 py-5 shadow-lg
               transition-all duration-300 ease-in-out
-              ${isMenuOpen ? 'opacity-100 top-full visible' : 'opacity-0 top-[calc(100%-10px)] invisible'}
-            `}>
+              ${
+                isMenuOpen
+                  ? "opacity-100 top-full visible"
+                  : "opacity-0 top-[calc(100%-10px)] invisible"
+              }
+            `}
+            >
               <nav className="flex flex-col space-y-4">
                 <div className="border-b border-gray-200 py-2">
                   <span className="font-medium mb-2 block">Services</span>
                   <div className="pl-4 flex flex-col space-y-3 mt-2">
-                    <Link to="/services/ai-automation" className="text-adrig-black hover:text-adrig-blue">
+                    <Link
+                      to="/services/ai-automation"
+                      className="text-adrig-black hover:text-adrig-blue"
+                    >
                       AI Automation
                     </Link>
                   </div>
                 </div>
-                
-                <Link to="/about" className={`text-adrig-black hover:text-adrig-blue py-2 ${location.pathname === '/about' ? 'font-semibold text-adrig-blue' : ''}`}>
+
+                <Link
+                  to="/about"
+                  className={`text-adrig-black hover:text-adrig-blue py-2 ${
+                    location.pathname === "/about"
+                      ? "font-semibold text-adrig-blue"
+                      : ""
+                  }`}
+                >
                   About
                 </Link>
-                
-                <Link to="/blog" className={`text-adrig-black hover:text-adrig-blue py-2 ${location.pathname === '/blog' ? 'font-semibold text-adrig-blue' : ''}`}>
+
+                <Link
+                  to="/blog"
+                  className={`text-adrig-black hover:text-adrig-blue py-2 ${
+                    location.pathname === "/blog"
+                      ? "font-semibold text-adrig-blue"
+                      : ""
+                  }`}
+                >
                   Blog
                 </Link>
-                
-                <Link to="/contact" className={`text-adrig-black hover:text-adrig-blue py-2 ${location.pathname === '/contact' ? 'font-semibold text-adrig-blue' : ''}`}>
+
+                <Link
+                  to="/contact"
+                  className={`text-adrig-black hover:text-adrig-blue py-2 ${
+                    location.pathname === "/contact"
+                      ? "font-semibold text-adrig-blue"
+                      : ""
+                  }`}
+                >
                   Contact
                 </Link>
-                
+
                 <div className="pt-2 flex flex-col space-y-3">
                   {user ? (
                     <>
                       <div className="flex items-center justify-center space-x-2 py-2">
                         <User size={16} className="text-adrig-blue" />
                         <span className="text-sm">
-                          {user.user_metadata?.name || user.email?.split('@')[0]}
+                          {user.user_metadata?.name ||
+                            user.email?.split("@")[0]}
                         </span>
                       </div>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
                         onClick={handleSignOut}
                       >
@@ -232,8 +283,8 @@ const Header = () => {
                     </>
                   ) : (
                     <>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full border-adrig-blue text-adrig-blue hover:bg-adrig-blue hover:text-white"
                         onClick={() => {
                           setIsMenuOpen(false);
@@ -242,8 +293,8 @@ const Header = () => {
                       >
                         <LogIn size={18} className="mr-1" /> Login
                       </Button>
-                      <Button 
-                        variant="default" 
+                      <Button
+                        variant="default"
                         className="w-full bg-adrig-blue hover:bg-blue-700"
                         onClick={() => {
                           setIsMenuOpen(false);
@@ -262,17 +313,17 @@ const Header = () => {
       </header>
 
       {/* Login and Signup Dialogs */}
-      <LoginDialog 
-        open={loginDialogOpen} 
-        onOpenChange={setLoginDialogOpen} 
+      <LoginDialog
+        open={loginDialogOpen}
+        onOpenChange={setLoginDialogOpen}
         onSwitchToSignup={() => {
           setLoginDialogOpen(false);
           setSignupDialogOpen(true);
         }}
       />
-      
-      <SignupDialog 
-        open={signupDialogOpen} 
+
+      <SignupDialog
+        open={signupDialogOpen}
         onOpenChange={setSignupDialogOpen}
         onSwitchToLogin={() => {
           setSignupDialogOpen(false);

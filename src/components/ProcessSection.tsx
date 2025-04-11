@@ -32,10 +32,10 @@ const ProcessSection = () => {
   return (
     <section className="py-20 bg-white text-black" id="process">
       <div className="container mx-auto px-8 lg:px-16">
-        <h2 className="text-5xl md:text-6xl font-bold mb-16 text-black">
-          {title.replace(highlight, '').trim()}
-          {highlight && <span className="text-adrig-blue">{highlight}</span>}
-        </h2>
+      <h2 className="text-5xl md:text-6xl font-bold mb-16 text-black">
+  {title.replace(highlight, '').trim()}{' '}
+  {highlight && <span className="text-adrig-blue">{highlight}</span>}
+</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {steps.map((step) => {
