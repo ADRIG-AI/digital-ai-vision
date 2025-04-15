@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useToast } from "@/components/ui/use-toast";
+import supabase from "../helper/supabaseClient";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -22,16 +24,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Send,
-  History,
-  MessageSquare,
-} from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import supabase from "../helper/supabaseClient";
+import { MapPin, Phone, Mail, Send, History } from "lucide-react";
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (container: string | HTMLElement, options: any) => string;
+      remove: (widgetId: string) => void;
+      reset: (widgetId: string) => void;
+    };
+  }
+}
 
 interface Message {
   id: string;
@@ -43,6 +46,8 @@ interface Message {
   status: string;
   reply: string;
   replied_at: string | null;
+  user_id: string | null;
+  is_verified: boolean;
 }
 
 const contactFormSchema = z.object({
@@ -57,6 +62,11 @@ const Contact = () => {
   const [userMessages, setUserMessages] = useState<Message[]>([]);
   const [user, setUser] = useState<any>(null);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [widgetId, setWidgetId] = useState<string | null>(null);
+  const captchaRef = useRef<HTMLDivElement>(null);
+  const turnstileLoaded = useRef(false);
 
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
@@ -68,26 +78,72 @@ const Contact = () => {
     },
   });
 
+  // Initialize Turnstile CAPTCHA
   useEffect(() => {
-    if (user) {
-      form.reset({
-        name: user.user_metadata?.name || user.email?.split('@')[0] || '',
-        email: user.email || '',
-        service: '',
-        message: '',
-      });
-      fetchUserMessages(user.email);
-    } else {
-      form.reset({
-        name: "",
-        email: "",
-        service: "",
-        message: "",
-      });
-      setUserMessages([]);
-    }
-  }, [user, form]);
+    if (user || turnstileLoaded.current || !import.meta.env.VITE_TURNSTILE_SITE_KEY) return;
 
+    const loadTurnstile = () => {
+      const script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        turnstileLoaded.current = true;
+        initializeTurnstile();
+      };
+      script.onerror = () => {
+        console.error("Failed to load Turnstile script");
+        toast({
+          title: "Security Error",
+          description: "Failed to load security check. Please refresh the page.",
+          variant: "destructive",
+        });
+      };
+      document.body.appendChild(script);
+    };
+
+    const initializeTurnstile = () => {
+      if (!window.turnstile || !captchaRef.current) {
+        console.error("Turnstile not available or container missing");
+        return;
+      }
+
+      try {
+        if (widgetId) {
+          window.turnstile.remove(widgetId);
+        }
+
+        const id = window.turnstile.render(captchaRef.current, {
+          sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY,
+          callback: (token: string) => {
+            console.log("CAPTCHA verified with token:", token);
+            setCaptchaToken(token);
+          },
+          "expired-callback": () => {
+            console.log("CAPTCHA expired");
+            setCaptchaToken(null);
+          },
+          "error-callback": () => {
+            console.log("CAPTCHA error");
+            setCaptchaToken(null);
+          },
+        });
+        setWidgetId(id);
+      } catch (error) {
+        console.error("Error initializing Turnstile:", error);
+      }
+    };
+
+    loadTurnstile();
+
+    return () => {
+      if (window.turnstile && widgetId) {
+        window.turnstile.remove(widgetId);
+      }
+    };
+  }, [user]);
+
+  // Handle user authentication state
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -98,11 +154,7 @@ const Contact = () => {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        if (event === "SIGNED_IN") {
-          setUser(session?.user ?? null);
-        } else if (event === "SIGNED_OUT") {
-          setUser(null);
-        }
+        setUser(session?.user ?? null);
       }
     );
 
@@ -111,24 +163,37 @@ const Contact = () => {
     };
   }, []);
 
+  // Reset form when user changes
+  useEffect(() => {
+    form.reset({
+      name: user?.user_metadata?.name || user?.email?.split('@')[0] || "",
+      email: user?.email || "",
+      service: "",
+      message: "",
+    });
+
+    if (user?.email) {
+      fetchUserMessages(user.email);
+    } else {
+      setUserMessages([]);
+    }
+  }, [user]);
+
   const fetchUserMessages = async (email: string) => {
     setLoadingMessages(true);
     try {
       const { data, error } = await supabase
         .from("contact_messages")
-        .select(
-          "id, name, email, service, message, created_at, status, reply, replied_at"
-        )
-        .eq("email", email)
+        .select("*")
+        .or(`and(user_id.eq.${user?.id},is_verified.eq.true),and(email.eq.${email},is_verified.eq.true)`)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-
       setUserMessages(data || []);
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to load your messages",
+        description: "Failed to load messages",
         variant: "destructive",
       });
     } finally {
@@ -136,35 +201,81 @@ const Contact = () => {
     }
   };
 
-  const handleServiceChange = (value: string) => {
-    form.setValue("service", value);
-  };
-
   const onSubmit = async (values: z.infer<typeof contactFormSchema>) => {
+    setIsSubmitting(true);
+    
     try {
-      const { error } = await supabase.from("contact_messages").insert({
-        name: values.name,
-        email: values.email,
-        service: values.service || null,
-        message: values.message,
-        user_id: user?.id || null,
-      });
+      console.log("Form submission started with values:", values);
+      
+      if (!user && !captchaToken) {
+        throw new Error("Please complete the CAPTCHA challenge");
+      }
 
-      if (error) throw error;
+      if (user) {
+        // Authenticated submission
+        const { error } = await supabase.from("contact_messages").insert({
+          ...values,
+          user_id: user.id,
+          is_verified: true,
+        });
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Success!",
+          description: "Your message has been sent",
+        });
+      } else {
+        // Unauthenticated submission with CAPTCHA
+        console.log("Submitting with CAPTCHA token:", captchaToken);
+        
+        const response = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/verify-captcha-and-submit`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+            },
+            body: JSON.stringify({
+              ...values,
+              token: captchaToken,
+            }),
+          }
+        );
 
-      toast({ title: "Success!", description: "Message sent!" });
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("API Error:", errorData);
+          throw new Error(errorData.error || "Failed to submit form");
+        }
+
+        const result = await response.json();
+        toast({
+          title: "Success!",
+          description: result.message || "Message submitted successfully",
+        });
+      }
+
       form.reset({ ...form.getValues(), service: "", message: "" });
 
-      // Only fetch messages if user is logged in
-      if (user) {
-        fetchUserMessages(values.email);
+      if (user?.email) {
+        await fetchUserMessages(user.email);
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Submission failed:", error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to send message",
         variant: "destructive",
       });
+      
+      if (!user && window.turnstile && widgetId) {
+        window.turnstile.reset(widgetId);
+        setCaptchaToken(null);
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -175,12 +286,9 @@ const Contact = () => {
       <main className="flex-grow pt-20">
         <section className="bg-adrig-blue text-white py-20">
           <div className="container mx-auto px-8 lg:px-16 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-              Get in Touch
-            </h1>
-            <p className="text-xl max-w-3xl mx-auto text-white/90">
-              Have questions about our AI solutions? Ready to start your digital
-              transformation journey? We're here to help!
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
+            <p className="text-xl max-w-3xl mx-auto">
+              Have questions? Our team is ready to help with your AI needs.
             </p>
           </div>
         </section>
@@ -188,14 +296,9 @@ const Contact = () => {
         <section className="py-20 bg-white">
           <div className="container mx-auto px-8 lg:px-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-              <div className="space-y-12">
+              <div className="space-y-8">
                 <div>
-                  <h2 className="text-3xl font-bold mb-6">Send Us a Message</h2>
-                  <p className="text-gray-600 mb-8">
-                    Fill out the form below, and one of our AI specialists will
-                    get back to you within 24 hours.
-                  </p>
-
+                  <h2 className="text-3xl font-bold mb-6">Send a Message</h2>
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                       <FormField
@@ -203,13 +306,13 @@ const Contact = () => {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Name</FormLabel>
+                            <FormLabel>Full Name</FormLabel>
                             <FormControl>
                               <Input
                                 {...field}
                                 placeholder="Your name"
                                 readOnly={!!user}
-                                className={user ? "bg-gray-100 cursor-not-allowed" : ""}
+                                className={user ? "bg-gray-100" : ""}
                               />
                             </FormControl>
                             <FormMessage />
@@ -227,9 +330,9 @@ const Contact = () => {
                               <Input
                                 {...field}
                                 type="email"
-                                placeholder="Your email address"
+                                placeholder="your@email.com"
                                 readOnly={!!user}
-                                className={user ? "bg-gray-100 cursor-not-allowed" : ""}
+                                className={user ? "bg-gray-100" : ""}
                               />
                             </FormControl>
                             <FormMessage />
@@ -242,8 +345,8 @@ const Contact = () => {
                         name="service"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Select a Service</FormLabel>
-                            <Select onValueChange={handleServiceChange} value={field.value}>
+                            <FormLabel>Service Needed</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
                               <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Select a service" />
@@ -253,9 +356,6 @@ const Contact = () => {
                                 <SelectItem value="ai-automation">AI Automation</SelectItem>
                                 <SelectItem value="data-analysis">Data Analysis</SelectItem>
                                 <SelectItem value="chatbot-development">Chatbot Development</SelectItem>
-                                <SelectItem value="workflow-automations">Workflow Automations</SelectItem>
-                                <SelectItem value="llm-development">LLM Development</SelectItem>
-                                <SelectItem value="ai-consulting">AI Consulting</SelectItem>
                                 <SelectItem value="other">Other</SelectItem>
                               </SelectContent>
                             </Select>
@@ -269,11 +369,11 @@ const Contact = () => {
                         name="message"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Message</FormLabel>
+                            <FormLabel>Your Message</FormLabel>
                             <FormControl>
                               <Textarea
                                 {...field}
-                                placeholder="Tell us about your project or requirements"
+                                placeholder="Tell us about your project..."
                                 className="min-h-[150px]"
                               />
                             </FormControl>
@@ -282,17 +382,26 @@ const Contact = () => {
                         )}
                       />
 
+                      {!user && (
+                        <div 
+                          ref={captchaRef}
+                          className="cf-turnstile" 
+                          style={{ 
+                            minHeight: '65px',
+                            display: 'flex',
+                            justifyContent: 'center'
+                          }}
+                        />
+                      )}
+
                       <Button
                         type="submit"
-                        disabled={form.formState.isSubmitting}
-                        className="w-full bg-adrig-blue hover:bg-blue-700 py-6"
+                        disabled={isSubmitting}
+                        className="w-full py-6 bg-adrig-blue hover:bg-blue-700"
                       >
-                        {form.formState.isSubmitting ? (
+                        {isSubmitting ? (
                           <span className="flex items-center">
-                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
+                            <Send className="mr-2" size={18} />
                             Sending...
                           </span>
                         ) : (
@@ -306,105 +415,41 @@ const Contact = () => {
                   </Form>
                 </div>
 
-                {/* Only show message history if user is logged in */}
                 {user && (
-                  <div className="bg-gray-50 p-6 rounded-xl">
-                    <div className="flex items-center mb-4">
-                      <History className="mr-2 text-adrig-blue" size={20} />
-                      <h3 className="text-xl font-semibold">
-                        Your Message History
-                      </h3>
+                  <div className="bg-gray-50 p-6 rounded-xl border">
+                    <div className="flex items-center gap-2 mb-4">
+                      <History className="text-adrig-blue" size={20} />
+                      <h3 className="text-xl font-semibold">Your Messages</h3>
                     </div>
 
                     {loadingMessages ? (
                       <div className="flex justify-center py-8">
-                        <svg
-                          className="animate-spin h-6 w-6 text-adrig-blue"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-adrig-blue" />
                       </div>
                     ) : userMessages.length > 0 ? (
                       <div className="space-y-4">
                         {userMessages.map((message) => (
-                          <div
-                            key={message.id}
-                            className="border-b border-gray-200 pb-4 last:border-0 last:pb-0"
-                          >
-                            <div className="flex justify-between items-start">
+                          <div key={message.id} className="border-b pb-4 last:border-0">
+                            <div className="flex justify-between">
                               <div>
                                 <p className="font-medium">
                                   {message.service || "General Inquiry"}
                                 </p>
                                 <p className="text-sm text-gray-500">
-                                  {new Date(
-                                    message.created_at
-                                  ).toLocaleDateString("en-US", {
-                                    year: "numeric",
-                                    month: "short",
-                                    day: "numeric",
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  })}
+                                  {new Date(message.created_at).toLocaleString()}
                                 </p>
                               </div>
-                              <div className="flex items-center">
-                                {message.status === "replied" && (
-                                  <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mr-2">
-                                    Replied
-                                  </span>
-                                )}
-                                <MessageSquare
-                                  className="text-adrig-blue/70"
-                                  size={18}
-                                />
-                              </div>
+                              {message.status === "replied" && (
+                                <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                                  Replied
+                                </span>
+                              )}
                             </div>
-                            <p className="mt-2 text-gray-700 text-sm">
-                              {message.message}
-                            </p>
-
+                            <p className="mt-2 text-gray-700">{message.message}</p>
                             {message.reply && (
-                              <div className="mt-4 pl-4 border-l-4 border-adrig-blue/30">
-                                <div className="flex items-center text-sm text-gray-500 mb-1">
-                                  <span className="font-medium text-adrig-blue">
-                                    ADRiG Team
-                                  </span>
-                                  {message.replied_at && (
-                                    <span className="mx-2">•</span>
-                                  )}
-                                  {message.replied_at && (
-                                    <span>
-                                      {new Date(
-                                        message.replied_at
-                                      ).toLocaleDateString("en-US", {
-                                        year: "numeric",
-                                        month: "short",
-                                        day: "numeric",
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                      })}
-                                    </span>
-                                  )}
-                                </div>
-                                <p className="text-gray-700 text-sm mt-1">
-                                  {message.reply}
-                                </p>
+                              <div className="mt-3 pl-3 border-l-2 border-adrig-blue/30">
+                                <p className="text-sm text-gray-500">Our response:</p>
+                                <p className="text-gray-700">{message.reply}</p>
                               </div>
                             )}
                           </div>
@@ -417,57 +462,42 @@ const Contact = () => {
                 )}
               </div>
 
-              <div className="flex flex-col space-y-8">
-                <div className="bg-gray-50 p-8 rounded-xl">
-                  <h2 className="text-3xl font-bold mb-6">
-                    Contact Information
-                  </h2>
-
+              <div className="space-y-8">
+                <div className="bg-gray-50 p-8 rounded-xl border">
+                  <h2 className="text-3xl font-bold mb-6">Contact Info</h2>
                   <div className="space-y-6">
-                    <div className="flex items-start">
-                      <MapPin
-                        className="mr-4 text-adrig-blue flex-shrink-0 mt-1"
-                        size={24}
-                      />
+                    <div className="flex gap-4">
+                      <MapPin className="text-adrig-blue mt-1 flex-shrink-0" size={24} />
                       <div>
-                        <h3 className="font-semibold text-lg">
-                          Office Location
-                        </h3>
+                        <h3 className="font-semibold">Our Office</h3>
                         <p className="text-gray-600 mt-1">
-                        kovil, 2, Sangothi amman, 3rd Cross St, 
-                        Sembakkam, Chennai, Tamil Nadu 600073
-                       
+                          123 AI Street, Tech City, TN 600073
                         </p>
                       </div>
                     </div>
-
-                    <div className="flex items-start">
-                      <Phone
-                        className="mr-4 text-adrig-blue flex-shrink-0 mt-1"
-                        size={24}
-                      />
+                    <div className="flex gap-4">
+                      <Phone className="text-adrig-blue mt-1 flex-shrink-0" size={24} />
                       <div>
-                        <h3 className="font-semibold text-lg">Phone</h3>
-                        <p className="text-gray-600 mt-1">(+91) 994210530</p>
+                        <h3 className="font-semibold">Phone</h3>
+                        <p className="text-gray-600 mt-1">(+91) 9876543210</p>
                       </div>
                     </div>
-
-                    <div className="flex items-start">
-                      <Mail
-                        className="mr-4 text-adrig-blue flex-shrink-0 mt-1"
-                        size={24}
-                      />
+                    <div className="flex gap-4">
+                      <Mail className="text-adrig-blue mt-1 flex-shrink-0" size={24} />
                       <div>
-                        <h3 className="font-semibold text-lg">Email</h3>
+                        <h3 className="font-semibold">Email</h3>
                         <p className="text-gray-600 mt-1">contact@adrig.co.in</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="h-96 bg-gray-200 rounded-xl flex-grow">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <MapPin size={60} className="text-adrig-blue/30" />
+                <div className="h-96 bg-gray-100 rounded-xl overflow-hidden">
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100">
+                    <div className="text-center p-6">
+                      <MapPin className="mx-auto text-adrig-blue/30" size={48} />
+                      <p className="mt-4 text-gray-500">Our office location</p>
+                    </div>
                   </div>
                 </div>
               </div>
