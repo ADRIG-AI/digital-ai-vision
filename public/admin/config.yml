@@ -1,6 +1,11 @@
-local_backend: true
 backend:
-  name: test-repo
+  name: github
+  repo: adrig-technologies/adrig-website
+  branch: new/webpage
+  auth_scope: repo
+
+publish_mode: editorial_workflow
+local_backend: true
 
 media_folder: "public/uploads"
 public_folder: "/uploads"

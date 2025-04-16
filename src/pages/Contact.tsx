@@ -54,7 +54,9 @@ const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
   email: z.string().email({ message: "Invalid email address" }),
   service: z.string().optional(),
-  message: z.string().min(10, { message: "Message must be at least 10 characters" }),
+  message: z
+    .string()
+    .min(10, { message: "Message must be at least 10 characters" }),
 });
 
 const Contact = () => {
@@ -80,7 +82,12 @@ const Contact = () => {
 
   // Initialize Turnstile CAPTCHA
   useEffect(() => {
-    if (user || turnstileLoaded.current || !import.meta.env.VITE_TURNSTILE_SITE_KEY) return;
+    if (
+      user ||
+      turnstileLoaded.current ||
+      !import.meta.env.VITE_TURNSTILE_SITE_KEY
+    )
+      return;
 
     const loadTurnstile = () => {
       const script = document.createElement("script");
@@ -95,7 +102,8 @@ const Contact = () => {
         console.error("Failed to load Turnstile script");
         toast({
           title: "Security Error",
-          description: "Failed to load security check. Please refresh the page.",
+          description:
+            "Failed to load security check. Please refresh the page.",
           variant: "destructive",
         });
       };
@@ -146,7 +154,9 @@ const Contact = () => {
   // Handle user authentication state
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       setUser(user);
     };
 
@@ -166,7 +176,7 @@ const Contact = () => {
   // Reset form when user changes
   useEffect(() => {
     form.reset({
-      name: user?.user_metadata?.name || user?.email?.split('@')[0] || "",
+      name: user?.user_metadata?.name || user?.email?.split("@")[0] || "",
       email: user?.email || "",
       service: "",
       message: "",
@@ -185,7 +195,9 @@ const Contact = () => {
       const { data, error } = await supabase
         .from("contact_messages")
         .select("*")
-        .or(`and(user_id.eq.${user?.id},is_verified.eq.true),and(email.eq.${email},is_verified.eq.true)`)
+        .or(
+          `and(user_id.eq.${user?.id},is_verified.eq.true),and(email.eq.${email},is_verified.eq.true)`
+        )
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -203,10 +215,10 @@ const Contact = () => {
 
   const onSubmit = async (values: z.infer<typeof contactFormSchema>) => {
     setIsSubmitting(true);
-    
+
     try {
       console.log("Form submission started with values:", values);
-      
+
       if (!user && !captchaToken) {
         throw new Error("Please complete the CAPTCHA challenge");
       }
@@ -218,9 +230,9 @@ const Contact = () => {
           user_id: user.id,
           is_verified: true,
         });
-        
+
         if (error) throw error;
-        
+
         toast({
           title: "Success!",
           description: "Your message has been sent",
@@ -228,14 +240,16 @@ const Contact = () => {
       } else {
         // Unauthenticated submission with CAPTCHA
         console.log("Submitting with CAPTCHA token:", captchaToken);
-        
+
         const response = await fetch(
-          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/verify-captcha-and-submit`,
+          `${
+            import.meta.env.VITE_SUPABASE_URL
+          }/functions/v1/verify-captcha-and-submit`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+              Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
             },
             body: JSON.stringify({
               ...values,
@@ -269,7 +283,7 @@ const Contact = () => {
         description: error.message || "Failed to send message",
         variant: "destructive",
       });
-      
+
       if (!user && window.turnstile && widgetId) {
         window.turnstile.reset(widgetId);
         setCaptchaToken(null);
@@ -300,7 +314,10 @@ const Contact = () => {
                 <div>
                   <h2 className="text-3xl font-bold mb-6">Send a Message</h2>
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="space-y-6"
+                    >
                       <FormField
                         control={form.control}
                         name="name"
@@ -346,16 +363,34 @@ const Contact = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Service Needed</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
                               <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Select a service" />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="ai-automation">AI Automation</SelectItem>
-                                <SelectItem value="data-analysis">Data Analysis</SelectItem>
-                                <SelectItem value="chatbot-development">Chatbot Development</SelectItem>
+                                <SelectItem value="ai-automation">
+                                  AI Automation
+                                </SelectItem>
+                                <SelectItem value="data-analysis">
+                                  Data Analysis
+                                </SelectItem>
+                                <SelectItem value="chatbot-development">
+                                  Chatbot Development
+                                </SelectItem>
+                                <SelectItem value="workflow-automations">
+                                  Workflow Automations
+                                </SelectItem>
+                                <SelectItem value="llm-development">
+                                  LLM Development
+                                </SelectItem>
+                                <SelectItem value="ai-consulting">
+                                  AI Consulting
+                                </SelectItem>
                                 <SelectItem value="other">Other</SelectItem>
                               </SelectContent>
                             </Select>
@@ -383,13 +418,13 @@ const Contact = () => {
                       />
 
                       {!user && (
-                        <div 
+                        <div
                           ref={captchaRef}
-                          className="cf-turnstile" 
-                          style={{ 
-                            minHeight: '65px',
-                            display: 'flex',
-                            justifyContent: 'center'
+                          className="cf-turnstile"
+                          style={{
+                            minHeight: "65px",
+                            display: "flex",
+                            justifyContent: "center",
                           }}
                         />
                       )}
@@ -429,14 +464,19 @@ const Contact = () => {
                     ) : userMessages.length > 0 ? (
                       <div className="space-y-4">
                         {userMessages.map((message) => (
-                          <div key={message.id} className="border-b pb-4 last:border-0">
+                          <div
+                            key={message.id}
+                            className="border-b pb-4 last:border-0"
+                          >
                             <div className="flex justify-between">
                               <div>
                                 <p className="font-medium">
                                   {message.service || "General Inquiry"}
                                 </p>
                                 <p className="text-sm text-gray-500">
-                                  {new Date(message.created_at).toLocaleString()}
+                                  {new Date(
+                                    message.created_at
+                                  ).toLocaleString()}
                                 </p>
                               </div>
                               {message.status === "replied" && (
@@ -445,10 +485,14 @@ const Contact = () => {
                                 </span>
                               )}
                             </div>
-                            <p className="mt-2 text-gray-700">{message.message}</p>
+                            <p className="mt-2 text-gray-700">
+                              {message.message}
+                            </p>
                             {message.reply && (
                               <div className="mt-3 pl-3 border-l-2 border-adrig-blue/30">
-                                <p className="text-sm text-gray-500">Our response:</p>
+                                <p className="text-sm text-gray-500">
+                                  Our response:
+                                </p>
                                 <p className="text-gray-700">{message.reply}</p>
                               </div>
                             )}
@@ -456,7 +500,9 @@ const Contact = () => {
                         ))}
                       </div>
                     ) : (
-                      <p className="text-gray-500 text-center py-4">No messages yet</p>
+                      <p className="text-gray-500 text-center py-4">
+                        No messages yet
+                      </p>
                     )}
                   </div>
                 )}
@@ -467,7 +513,10 @@ const Contact = () => {
                   <h2 className="text-3xl font-bold mb-6">Contact Info</h2>
                   <div className="space-y-6">
                     <div className="flex gap-4">
-                      <MapPin className="text-adrig-blue mt-1 flex-shrink-0" size={24} />
+                      <MapPin
+                        className="text-adrig-blue mt-1 flex-shrink-0"
+                        size={24}
+                      />
                       <div>
                         <h3 className="font-semibold">Our Office</h3>
                         <p className="text-gray-600 mt-1">
@@ -476,17 +525,25 @@ const Contact = () => {
                       </div>
                     </div>
                     <div className="flex gap-4">
-                      <Phone className="text-adrig-blue mt-1 flex-shrink-0" size={24} />
+                      <Phone
+                        className="text-adrig-blue mt-1 flex-shrink-0"
+                        size={24}
+                      />
                       <div>
                         <h3 className="font-semibold">Phone</h3>
                         <p className="text-gray-600 mt-1">(+91) 9876543210</p>
                       </div>
                     </div>
                     <div className="flex gap-4">
-                      <Mail className="text-adrig-blue mt-1 flex-shrink-0" size={24} />
+                      <Mail
+                        className="text-adrig-blue mt-1 flex-shrink-0"
+                        size={24}
+                      />
                       <div>
                         <h3 className="font-semibold">Email</h3>
-                        <p className="text-gray-600 mt-1">contact@adrig.co.in</p>
+                        <p className="text-gray-600 mt-1">
+                          contact@adrig.co.in
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -495,7 +552,10 @@ const Contact = () => {
                 <div className="h-96 bg-gray-100 rounded-xl overflow-hidden">
                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100">
                     <div className="text-center p-6">
-                      <MapPin className="mx-auto text-adrig-blue/30" size={48} />
+                      <MapPin
+                        className="mx-auto text-adrig-blue/30"
+                        size={48}
+                      />
                       <p className="mt-4 text-gray-500">Our office location</p>
                     </div>
                   </div>
