@@ -1,12 +1,11 @@
-
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { 
-  Brain, 
-  Database, 
-  MessageCircle, 
-  Workflow, 
-  Code, 
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  Brain,
+  Database,
+  MessageCircle,
+  Workflow,
+  Code,
   Lightbulb,
   BarChart,
   LineChart,
@@ -21,8 +20,8 @@ import {
   Layers,
   Cpu,
   GitBranch,
-  Server
-} from 'lucide-react';
+  Server,
+} from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -38,161 +37,165 @@ export const services = [
     icon: Brain,
     href: "/services/ai-automation",
     subcategories: [
-      { 
-        name: "Predictive Analytics", 
+      {
+        name: "Predictive Analytics",
         href: "/services/ai-automation/predictive-analytics",
         icon: BarChart,
-        description: "Forecasting trends and identifying opportunities with AI"
+        description: "Forecasting trends and identifying opportunities with AI",
       },
-      { 
-        name: "Machine Learning Solutions", 
+      {
+        name: "Machine Learning Solutions",
         href: "/services/ai-automation/machine-learning",
         icon: Cpu,
-        description: "Custom ML models for complex business problems"
+        description: "Custom ML models for complex business problems",
       },
-      { 
-        name: "AI Integration", 
+      {
+        name: "AI Integration",
         href: "/services/ai-automation/ai-integration",
         icon: GitBranch,
-        description: "Seamless AI integration with existing systems" 
-      }
-    ]
+        description: "Seamless AI integration with existing systems",
+      },
+    ],
   },
   {
     title: "Data Analysis",
     icon: Database,
     href: "/services/data-analysis",
     subcategories: [
-      { 
-        name: "Business Intelligence", 
+      {
+        name: "Business Intelligence",
         href: "/services/data-analysis/business-intelligence",
         icon: LineChart,
-        description: "Transforming raw data into actionable insights"
+        description: "Transforming raw data into actionable insights",
       },
-      { 
-        name: "Data Visualization", 
+      {
+        name: "Data Visualization",
         href: "/services/data-analysis/data-visualization",
         icon: PieChart,
-        description: "Interactive dashboards and visual reporting"
+        description: "Interactive dashboards and visual reporting",
       },
-      { 
-        name: "Big Data Processing", 
+      {
+        name: "Big Data Processing",
         href: "/services/data-analysis/big-data",
         icon: Server,
-        description: "Handling and analyzing large-scale datasets" 
-      }
-    ]
+        description: "Handling and analyzing large-scale datasets",
+      },
+    ],
   },
   {
     title: "Chatbot Development",
     icon: MessageCircle,
     href: "/services/chatbot-development",
     subcategories: [
-      { 
-        name: "Customer Support Bots", 
+      {
+        name: "Customer Support Bots",
         href: "/services/chatbot-development/customer-support",
         icon: Bot,
-        description: "24/7 automated customer service solutions"
+        description: "24/7 automated customer service solutions",
       },
-      { 
-        name: "E-commerce Assistants", 
+      {
+        name: "E-commerce Assistants",
         href: "/services/chatbot-development/ecommerce",
         icon: ShoppingCart,
-        description: "Shopping assistants that boost conversion"
+        description: "Shopping assistants that boost conversion",
       },
-      { 
-        name: "Lead Generation Bots", 
+      {
+        name: "Lead Generation Bots",
         href: "/services/chatbot-development/lead-generation",
         icon: Users,
-        description: "Intelligent bots that qualify and nurture leads" 
-      }
-    ]
+        description: "Intelligent bots that qualify and nurture leads",
+      },
+    ],
   },
   {
     title: "Workflow Automations",
     icon: Workflow,
     href: "/services/workflow-automations",
     subcategories: [
-      { 
-        name: "Process Optimization", 
+      {
+        name: "Process Optimization",
         href: "/services/workflow-automations/process-optimization",
         icon: Cog,
-        description: "Streamlining and enhancing business processes"
+        description: "Streamlining and enhancing business processes",
       },
-      { 
-        name: "Task Automation", 
+      {
+        name: "Task Automation",
         href: "/services/workflow-automations/task-automation",
         icon: CheckCircle,
-        description: "Eliminating repetitive tasks with intelligent automation"
+        description: "Eliminating repetitive tasks with intelligent automation",
       },
-      { 
-        name: "Integration Services", 
+      {
+        name: "Integration Services",
         href: "/services/workflow-automations/integration",
         icon: Zap,
-        description: "Connecting your business tools and systems seamlessly" 
-      }
-    ]
+        description: "Connecting your business tools and systems seamlessly",
+      },
+    ],
   },
   {
     title: "LLM Development",
     icon: Code,
     href: "/services/llm-development",
     subcategories: [
-      { 
-        name: "Custom LLM Training", 
+      {
+        name: "Custom LLM Training",
         href: "/services/llm-development/custom-training",
         icon: BookOpen,
-        description: "Training language models for specific domains and use cases"
+        description:
+          "Training language models for specific domains and use cases",
       },
-      { 
-        name: "Language Understanding", 
+      {
+        name: "Language Understanding",
         href: "/services/llm-development/language-understanding",
         icon: Layers,
-        description: "Advanced NLP solutions for complex language tasks"
+        description: "Advanced NLP solutions for complex language tasks",
       },
-      { 
-        name: "Content Generation", 
+      {
+        name: "Content Generation",
         href: "/services/llm-development/content-generation",
         icon: Code,
-        description: "AI-powered content creation for marketing and communication" 
-      }
-    ]
+        description:
+          "AI-powered content creation for marketing and communication",
+      },
+    ],
   },
   {
     title: "AI Consulting",
     icon: Lightbulb,
     href: "/services/ai-consulting",
     subcategories: [
-      { 
-        name: "AI Strategy Development", 
+      {
+        name: "AI Strategy Development",
         href: "/services/ai-consulting/strategy",
         icon: Brain,
-        description: "Crafting comprehensive AI roadmaps for businesses"
+        description: "Crafting comprehensive AI roadmaps for businesses",
       },
-      { 
-        name: "Technology Assessment", 
+      {
+        name: "Technology Assessment",
         href: "/services/ai-consulting/assessment",
         icon: Cog,
-        description: "Evaluating and recommending optimal AI technologies"
+        description: "Evaluating and recommending optimal AI technologies",
       },
-      { 
-        name: "Implementation Planning", 
+      {
+        name: "Implementation Planning",
         href: "/services/ai-consulting/implementation",
         icon: CheckCircle,
-        description: "Planning and executing successful AI implementations" 
-      }
-    ]
-  }
+        description: "Planning and executing successful AI implementations",
+      },
+    ],
+  },
 ];
 
 export function ServicesDropdown() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(services[0].title);
+  const [activeCategory, setActiveCategory] = useState<string | null>(
+    services[0].title
+  );
 
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-adrig-black hover:text-adrig-blue">
+          <NavigationMenuTrigger className="text-base font-normal text-adrig-black hover:text-adrig-blue bg-transparent data-[state=open]:text-adrig-blue">
             Services
           </NavigationMenuTrigger>
           <NavigationMenuContent className="bg-white w-[900px] p-0">
@@ -204,7 +207,9 @@ export function ServicesDropdown() {
                     <button
                       onMouseEnter={() => setActiveCategory(service.title)}
                       className={`w-full text-left flex items-center gap-2 px-5 py-3 transition-colors hover:bg-gray-100 ${
-                        activeCategory === service.title ? "text-adrig-blue bg-gray-100" : "text-gray-800"
+                        activeCategory === service.title
+                          ? "text-adrig-blue bg-gray-100"
+                          : "text-gray-800"
                       }`}
                     >
                       <service.icon className="h-5 w-5 shrink-0" />
@@ -219,11 +224,17 @@ export function ServicesDropdown() {
                 {services.map((service) => (
                   <div
                     key={service.title}
-                    className={`${activeCategory === service.title ? "block" : "hidden"}`}
+                    className={`${
+                      activeCategory === service.title ? "block" : "hidden"
+                    }`}
                   >
                     <div className="mb-4">
-                      <h3 className="text-lg font-semibold text-adrig-blue mb-1">{service.title}</h3>
-                      <p className="text-sm text-gray-600">Explore our {service.title.toLowerCase()} services</p>
+                      <h3 className="text-lg font-semibold text-adrig-blue mb-1">
+                        {service.title}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Explore our {service.title.toLowerCase()} services
+                      </p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-6">
@@ -239,11 +250,13 @@ export function ServicesDropdown() {
                           <h4 className="font-medium text-gray-900 group-hover:text-adrig-blue">
                             {subcategory.name}
                           </h4>
-                          <p className="text-sm text-gray-600 mt-1">{subcategory.description}</p>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {subcategory.description}
+                          </p>
                         </Link>
                       ))}
                     </div>
-                    
+
                     <div className="mt-4 flex justify-end">
                       <Link
                         to={service.href}

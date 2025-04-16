@@ -1,38 +1,37 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight, Quote } from 'lucide-react';
 
-const testimonials = [
-  {
-    quote: "Adrig AI has completely transformed how we handle customer data. Their AI solutions are cutting-edge and delivered exceptional ROI.",
-    name: "Sarah Johnson",
-    company: "TechFirst Solutions",
-    position: "CTO"
-  },
-  {
-    quote: "We implemented Adrig's chatbot system and saw customer satisfaction increase by 40% within the first month. Truly impressive results.",
-    name: "Michael Chen",
-    company: "Retail Innovations",
-    position: "Head of Customer Experience"
-  },
-  {
-    quote: "Their data analysis platform gave us insights we never knew existed. It's like having a crystal ball for our business decisions.",
-    name: "Elena Rodriguez",
-    company: "Global Analytics",
-    position: "CEO"
-  },
-  {
-    quote: "The team at Adrig AI understood our specific needs and developed a custom solution that exceeded our expectations.",
-    name: "David Thompson",
-    company: "Enterprise Solutions",
-    position: "COO"
-  }
-];
+interface Testimonial {
+  quote: string;
+  name: string;
+  position: string;
+  company: string;
+}
+
+interface TestimonialsData {
+  title: string;
+  testimonials: Testimonial[];
+}
 
 const TestimonialsSection = () => {
+  const [data, setData] = useState<TestimonialsData | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const maxSlide = Math.ceil(testimonials.length / 2) - 1;
   const slideRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/content/landingpage/TestimonialSection.json');
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error("Error loading testimonials:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const maxSlide = data ? Math.ceil(data.testimonials.length / 2) - 1 : 0;
 
   const nextSlide = () => {
     setCurrentSlide(current => (current === maxSlide ? 0 : current + 1));
@@ -46,34 +45,35 @@ const TestimonialsSection = () => {
     if (slideRef.current) {
       slideRef.current.style.transform = `translateX(-${currentSlide * 100}%)`;
     }
-  }, [currentSlide]);
+  }, [currentSlide, data]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
     }, 5000);
-
     return () => clearInterval(interval);
   }, [currentSlide]);
+
+  if (!data) return <section className="py-20 bg-adrig-gray" id="testimonials"></section>;
 
   return (
     <section className="py-20 bg-adrig-gray" id="testimonials">
       <div className="container mx-auto px-4">
-        <h2 className="section-title">What Our Clients Say</h2>
+        <h2 className="section-title">{data.title}</h2>
         
         <div className="relative overflow-hidden">
           <div 
             ref={slideRef}
             className="flex transition-transform duration-500 ease-in-out"
-            style={{ width: `${Math.ceil(testimonials.length / 2) * 100}%` }}
+            style={{ width: `${Math.ceil(data.testimonials.length / 2) * 100}%` }}
           >
-            {Array.from({ length: Math.ceil(testimonials.length / 2) }).map((_, groupIndex) => (
+            {Array.from({ length: Math.ceil(data.testimonials.length / 2) }).map((_, groupIndex) => (
               <div 
                 key={groupIndex} 
                 className="w-full flex flex-col md:flex-row gap-6"
-                style={{ flex: `0 0 ${100 / Math.ceil(testimonials.length / 2)}%` }}
+                style={{ flex: `0 0 ${100 / Math.ceil(data.testimonials.length / 2)}%` }}
               >
-                {testimonials.slice(groupIndex * 2, groupIndex * 2 + 2).map((testimonial, index) => (
+                {data.testimonials.slice(groupIndex * 2, groupIndex * 2 + 2).map((testimonial, index) => (
                   <div key={index} className="testimonial-card flex-1 relative">
                     <Quote className="text-adrig-blue/20 absolute top-4 left-4" size={40} />
                     <div className="relative z-10">

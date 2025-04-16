@@ -1,0 +1,58 @@
+{
+  "company_info": {
+    "name": "Adrig AI",
+    "description": "Empowering businesses with cutting-edge AI solutions, automation, and scalable SaaS products."
+  },
+  "social_links": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/adrig.ai/"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/company/adrig"
+    }
+  ],
+  "nav_links": [
+    {
+      "text": "Home",
+      "url": "/"
+    },
+    {
+      "text": "Services",
+      "url": "/services"
+    },
+    {
+      "text": "About Us",
+      "url": "/about"
+    },
+    {
+      "text": "Contact",
+      "url": "/contact"
+    }
+  ],
+  "footer_services": [
+    {
+      "name": "AI Automation",
+      "url": "#"
+    },
+    {
+      "name": "Data Analysis",
+      "url": "#"
+    },
+    {
+      "name": "Chatbot Development",
+      "url": "#"
+    },
+    {
+      "name": "Workflow Automations",
+      "url": "#"
+    }
+  ],
+  "contact_info": {
+    "address": "kovil, 2, Sangothi amman, 3rd Cross St, Sembakkam, Chennai, Tamil Nadu 600073",
+    "phone": "+91 9942105301",
+    "email": "contact@adrig.co.in"
+  },
+  "copyright_notice": "Adrig AI Technologies. All rights reserved."
+}
