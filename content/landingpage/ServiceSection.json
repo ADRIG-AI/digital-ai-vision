@@ -1,0 +1,36 @@
+{
+  "title": "What we do",
+  "highlight": "we do",
+  "services": [
+    {
+        "title": "Chatbot Development",
+        "description": "We develop intelligent chatbots that leverage advanced NLP to elevate customer interactions and streamline your business processes.",
+        "image": "/uploads/chatbot-development.jpg",
+        "path": "/services/chatbot-development"
+      },
+    {
+      "title": "Workflow Automations",
+      "description": "Over 100+ automations to streamline your operations, improve efficiency and reduce costs with our custom AI solutions.",
+      "image": "/uploads/workflow-automations.jpg",
+      "path": "/services/workflow-automations"
+    },
+    {
+      "title": "Data Analysis",
+      "description": "Powerful data analysis tools to help you make better decisions and gain insights from your data.",
+      "image": "uploads/data-analysis.jpg",
+      "path": "/services/data-analysis"
+    },
+    {
+      "title": "LLM Development",
+      "description": "We create powerful Large Language Models tailored to your specific business needs and industry.",
+      "image": "uploads/llm-development.jpg",
+      "path": "/services/llm-development"
+    },
+    {
+      "title": "AI Consulting",
+      "description": "Expert guidance for AI-powered transformation to help you navigate the complex world of artificial intelligence.",
+      "image": "uploads/ai-consulting.jpg",
+      "path": "/services/ai-consulting"
+    }
+  ]
+}

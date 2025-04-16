@@ -1,0 +1,29 @@
+{
+  "title": "What Our Clients Say",
+  "testimonials": [
+    {
+      "quote": "Adrig AI has completely transformed how we handle customer data. Their AI solutions are cutting-edge and delivered exceptional ROI",
+      "name": "Sarah Johnson",
+      "position": "CTO",
+      "company": "TechFirst Solutions"
+    },
+    {
+      "quote": "We implemented Adrig's chatbot system and saw customer satisfaction increase by 40% within the first month. Truly impressive results.",
+      "name": "Michael Chen",
+      "position": "Head of Customer Experience",
+      "company": "Retail Innovations"
+    },
+    {
+      "quote": "Their data analysis platform gave us insights we never knew existed. It's like having a crystal ball for our business decisions.",
+      "name": "Elena Rodriguez",
+      "position": "CEO",
+      "company": "Global Analytics"
+    },
+    {
+      "quote": "The team at Adrig AI understood our specific needs and developed a custom solution that exceeded our expectations.",
+      "name": "David Thompson",
+      "position": "COO",
+      "company": "Enterprise Solutions"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+backend:
+  name: github
+  repo: adrig-technologies/adrig-website
+  branch: main
+  auth_scope: repo
+
+publish_mode: editorial_workflow
+local_backend: false
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "landing_page"
+    label: "Landing Page Sections"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - file: "content/landingpage/HeroSection.json"
+        label: "Hero Section"
+        name: "hero_section"
+        format: "json"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Subtitle", name: "subtitle", widget: "string" }
+          - { label: "Button Text", name: "button", widget: "string" }
+
+      - file: "content/landingpage/VideoSection.json"
+        label: "Video Section"
+        name: "video_section"
+        format: "json"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Subtitle", name: "subtitle", widget: "string" }
+          - { label: "Video title", name: "videotitle", widget: "string" }
+          - { label: "Time", name: "time", widget: "string" }
+          - { label: "Cardtitle-1", name: "firstcardtitle", widget: "string" }
+          - { label: "Cardsubtitle-1", name: "firstcardsubtitle", widget: "string" }
+          - { label: "Cardtitle-2", name: "secondcardtitle", widget: "string" }
+          - { label: "Cardsubtitle-2", name: "secondcardsubtitle", widget: "string" }
+          - { label: "Cardtitle-3", name: "thirdcardtitle", widget: "string" }
+          - { label: "Cardsubtitle-3", name: "thirdcardsubtitle", widget: "string" }
+
+      - file: "content/landingpage/ServiceSection.json"
+        label: "Service Section"
+        name: "service_section"
+        format: "json"
+        fields:
+          - { label: "Section Title", name: "title", widget: "string", default: "What we do" }
+          - { label: "Highlight Text", name: "highlight", widget: "string", default: "we do" }
+          - label: "Services"
+            name: "services"
+            widget: "list"
+            fields:
+              - { label: "Service Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "Path", name: "path", widget: "string" }
+
+      - file: "content/landingpage/ProcessSection.json"
+        label: "Process Section"
+        name: "process_section"
+        format: "json"
+        fields:
+          - { label: "Section Title", name: "title", widget: "string", default: "The process" }
+          - { label: "Highlight Text", name: "highlight", widget: "string", default: "process" }
+          - label: "Process Steps"
+            name: "steps"
+            widget: "list"
+            fields:
+              - { label: "Step Number", name: "number", widget: "select", options: ["01", "02", "03"], default: "01" }
+              - { label: "Step Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Icon", name: "icon", widget: "select", options: ["Search", "Code", "Cog"], default: "Search" }
+
+      - file: "content/landingpage/CtaSection.json"
+        label: "CTA Section"
+        name: "cta_section"
+        format: "json"
+        fields:
+          - { label: "Heading", name: "heading", widget: "string", default: "Let's Build the Future Together!" }
+          - { label: "Subheading", name: "subheading", widget: "text", default: "Ready to transform your business with cutting-edge AI solutions?" }
+          - { label: "Button Text", name: "buttonText", widget: "string", default: "Schedule a Consultation" }
+          - { label: "Button Link", name: "buttonLink", widget: "string", default: "/contact" }
+
+      - file: "content/landingpage/Footer.json"
+        label: "Footer Content"
+        name: "footer_content"
+        format: "json"
+        fields:
+          - label: "Company Info"
+            name: "company_info"
+            widget: "object"
+            fields:
+              - { label: "Company Name", name: "name", widget: "string", default: "Adrig AI" }
+              - { label: "Description", name: "description", widget: "text", default: "Empowering businesses with cutting-edge AI solutions." }
+          - label: "Social Media Links"
+            name: "social_links"
+            widget: "list"
+            fields:
+              - { label: "Platform", name: "platform", widget: "select", options: ["Facebook", "Twitter", "Instagram", "LinkedIn"] }
+              - { label: "URL", name: "url", widget: "string" }
+          - label: "Navigation Links"
+            name: "nav_links"
+            widget: "list"
+            fields:
+              - { label: "Text", name: "text", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+          - label: "Service Links"
+            name: "footer_services"
+            widget: "list"
+            fields:
+              - { label: "Service Name", name: "name", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+          - label: "Contact Information"
+            name: "contact_info"
+            widget: "object"
+            fields:
+              - { label: "Address", name: "address", widget: "string", default: "123 Tech Avenue" }
+              - { label: "Phone", name: "phone", widget: "string", default: "(555) 123-4567" }
+              - { label: "Email", name: "email", widget: "string", default: "info@adrigai.com" }
+          - { label: "Copyright Notice", name: "copyright_notice", widget: "string", default: "Adrig AI Technologies" }
+
+      - file: "content/landingpage/TestimonialSection.json"
+        label: "Testimonials Section"
+        name: "testimonials_section"
+        format: "json"
+        fields:
+          - { label: "Section Title", name: "title", widget: "string", default: "What Our Clients Say" }
+          - label: "Testimonials"
+            name: "testimonials"
+            widget: "list"
+            fields:
+              - { label: "Quote", name: "quote", widget: "text" }
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Position", name: "position", widget: "string" }
+              - { label: "Company", name: "company", widget: "string" }
