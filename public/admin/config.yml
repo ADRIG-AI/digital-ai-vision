@@ -1,7 +1,7 @@
 backend:
   name: github
   repo: adrig-technologies/adrig-website
-  branch: new/webpage
+  branch: main
   auth_scope: repo
 
 publish_mode: editorial_workflow
