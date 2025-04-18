@@ -9,6 +9,7 @@ import SignupDialog from "./SignupDialog";
 import supabase from "../helper/supabaseClient";
 import { useToast } from "@/hooks/use-toast";
 import Adrig_Logo from "../assets/Adrig_logo.png";
+import Logo from "../assets/logo.png";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -110,14 +111,8 @@ const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <Link to="/" className="flex items-center">
-              <img
-                src={Adrig_Logo}
-                alt="ADRIG Logo"
-                className="h-8 mr-2" // Adjusted height and margin
-              />
+              <img src={Adrig_Logo} alt="ADRIG Logo" className="h-9 mr-1.5" />
               <div className="flex items-baseline">
-                {" "}
-                {/* Added this wrapper for better text alignment */}
                 <span className="font-bold text-2xl text-adrig-blue">
                   ADRIG
                 </span>
