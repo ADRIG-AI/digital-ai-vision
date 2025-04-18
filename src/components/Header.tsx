@@ -113,10 +113,16 @@ const Header = () => {
               <img
                 src={Adrig_Logo}
                 alt="ADRIG Logo"
-                className="h-12 mr-1" 
+                className="h-8 mr-2" // Adjusted height and margin
               />
-              <span className="font-bold text-2xl text-adrig-blue">ADRIG</span>
-              <span className="font-bold text-xl text-black ml-1">AI</span>
+              <div className="flex items-baseline">
+                {" "}
+                {/* Added this wrapper for better text alignment */}
+                <span className="font-bold text-2xl text-adrig-blue">
+                  ADRIG
+                </span>
+                <span className="font-bold text-xl text-black ml-1">AI</span>
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
