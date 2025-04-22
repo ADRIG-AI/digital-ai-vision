@@ -9,7 +9,7 @@ import SignupDialog from "./SignupDialog";
 import supabase from "../helper/supabaseClient";
 import { useToast } from "@/hooks/use-toast";
 import Adrig_Logo from "../assets/Adrig_logo.png";
-import Logo from "../assets/logo.png";
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -111,12 +111,19 @@ const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <Link to="/" className="flex items-center">
-              <img src={Adrig_Logo} alt="ADRIG Logo" className="h-9 mr-1.5" />
-              <div className="flex items-baseline">
-                <span className="font-bold text-2xl text-adrig-blue">
-                  ADRIG
+              <img
+                src={Adrig_Logo}
+                alt="ADRIG Logo"
+                className="h-14 mr-0.5"
+              />
+              <div className="flex flex-col leading-tight -ml-1">
+                <div className="flex items-end">
+                  <span className="font-bold text-sm text-black">ADRIG</span>
+                  <span className="font-bold text-sm text-black ml-1">AI</span>
+                </div>
+                <span className="text-[8px] tracking-[0.25em] font-medium text-black uppercase">
+                  Technologies
                 </span>
-                <span className="font-bold text-xl text-black ml-1">AI</span>
               </div>
             </Link>
 
