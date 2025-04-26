@@ -9,6 +9,7 @@ import SignupDialog from "./SignupDialog";
 import supabase from "../helper/supabaseClient";
 import { useToast } from "@/hooks/use-toast";
 import Adrig_Logo from "../assets/Adrig_logo.png";
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -110,29 +111,32 @@ const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <Link to="/" className="flex items-center">
-              <img
-                src={Adrig_Logo}
-                alt="ADRIG Logo"
-                className="h-12 mr-1" 
-              />
-              <span className="font-bold text-2xl text-adrig-blue">ADRIG</span>
-              <span className="font-bold text-xl text-black ml-1">AI</span>
+              <img src={Adrig_Logo} alt="ADRIG Logo" className="h-14 mr-0.5" />
+              <div className="flex flex-col leading-tight -ml-1">
+                <div className="flex items-end">
+                  <span className="font-bold text-sm text-black">ADRIG</span>
+                  <span className="font-bold text-sm text-black ml-1">AI</span>
+                </div>
+                <span className="text-[8px] tracking-[0.25em] font-medium text-black uppercase">
+                  Technologies
+                </span>
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               <ServicesDropdown />
 
-              <Link
-                to="/about"
-                className={`text-adrig-black hover:text-adrig-blue transition-colors ${
-                  location.pathname === "/about"
-                    ? "font-semibold text-adrig-blue"
-                    : ""
-                }`}
-              >
-                About
-              </Link>
+              {/* // <Link
+//                 to="/about"
+//                 className={`text-adrig-black hover:text-adrig-blue transition-colors ${
+//                   location.pathname === "/about"
+//                     ? "font-semibold text-adrig-blue"
+//                     : ""
+//                 }`}
+//               >
+//                 About
+//               </Link> */}
 
               <Link
                 to="/blog"
