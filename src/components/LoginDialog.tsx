@@ -1,10 +1,9 @@
-
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { LogIn } from "lucide-react";
-
+import supabase from "../helper/supabaseClient";
 import {
   Dialog,
   DialogContent,
@@ -42,6 +41,7 @@ interface LoginDialogProps {
 
 export const LoginDialog = ({ open, onOpenChange, onSwitchToSignup }: LoginDialogProps) => {
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = React.useState(false);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,16 +51,38 @@ export const LoginDialog = ({ open, onOpenChange, onSwitchToSignup }: LoginDialo
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // This is just a placeholder for actual authentication logic
-    console.log(values);
-    toast({
-      title: "Login Attempt",
-      description: `Attempted login with email: ${values.email}`,
-    });
-    
-    // Close dialog after submission
-    onOpenChange(false);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) {
+        toast({
+          title: "Login Failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Login Successful",
+        description: "Welcome back!",
+      });
+      
+      onOpenChange(false);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -104,9 +126,13 @@ export const LoginDialog = ({ open, onOpenChange, onSwitchToSignup }: LoginDialo
               )}
             />
             
-            <Button type="submit" className="w-full bg-adrig-blue hover:bg-blue-700">
+            <Button 
+              type="submit" 
+              className="w-full bg-adrig-blue hover:bg-blue-700"
+              disabled={isLoading}
+            >
               <LogIn className="mr-2 h-4 w-4" />
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </Button>
           </form>
         </Form>
@@ -115,7 +141,6 @@ export const LoginDialog = ({ open, onOpenChange, onSwitchToSignup }: LoginDialo
           <div className="text-sm text-center">
             <Button variant="link" onClick={() => {
               onOpenChange(false);
-              // Add your "forgot password" logic here
             }} className="p-0">
               Forgot Password?
             </Button>
