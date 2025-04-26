@@ -111,11 +111,7 @@ const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <Link to="/" className="flex items-center">
-              <img
-                src={Adrig_Logo}
-                alt="ADRIG Logo"
-                className="h-14 mr-0.5"
-              />
+              <img src={Adrig_Logo} alt="ADRIG Logo" className="h-14 mr-0.5" />
               <div className="flex flex-col leading-tight -ml-1">
                 <div className="flex items-end">
                   <span className="font-bold text-sm text-black">ADRIG</span>
@@ -131,16 +127,16 @@ const Header = () => {
             <nav className="hidden md:flex items-center space-x-8">
               <ServicesDropdown />
 
-              <Link
-                to="/about"
-                className={`text-adrig-black hover:text-adrig-blue transition-colors ${
-                  location.pathname === "/about"
-                    ? "font-semibold text-adrig-blue"
-                    : ""
-                }`}
-              >
-                About
-              </Link>
+              {/* // <Link
+//                 to="/about"
+//                 className={`text-adrig-black hover:text-adrig-blue transition-colors ${
+//                   location.pathname === "/about"
+//                     ? "font-semibold text-adrig-blue"
+//                     : ""
+//                 }`}
+//               >
+//                 About
+//               </Link> */}
 
               <Link
                 to="/blog"
