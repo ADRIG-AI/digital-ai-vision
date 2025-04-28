@@ -2,6 +2,7 @@ backend:
   name: github
   repo: adrig-technologies/adrig-website
   branch: main
+  site_url: https://deluxe-figolla-439dac.netlify.app/
   auth_scope: repo
 
 publish_mode: editorial_workflow
