@@ -34,19 +34,19 @@
   "footer_services": [
     {
       "name": "AI Automation",
-      "url": "#"
+      "url": "/services/ai-automation"
     },
     {
       "name": "Data Analysis",
-      "url": "#"
+      "url": "/services/data-analysis"
     },
     {
       "name": "Chatbot Development",
-      "url": "#"
+      "url": "/services/chatbot-development"
     },
     {
       "name": "Workflow Automations",
-      "url": "#"
+      "url": "/services/workflow-automations"
     }
   ],
   "contact_info": {

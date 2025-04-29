@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-
+import AI from "../assets/AI.jpg"
 // Sample blog posts data
 // In a real application, this would come from an API or CMS
 const blogPosts = [
@@ -16,7 +16,7 @@ const blogPosts = [
     excerpt: "Explore how generative AI is transforming business operations and creating new opportunities for innovation across industries.",
     date: "April 2, 2025",
     readTime: "5 min read",
-    imageUrl: "https://images.unsplash.com/photo-1677442135136-760c813460df?auto=format&fit=crop&q=80&w=1400",
+    imageUrl: AI,
     slug: "future-of-generative-ai"
   },
   {

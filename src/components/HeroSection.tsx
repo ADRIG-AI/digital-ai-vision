@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
@@ -6,29 +5,29 @@ type LandingContent = {
   title: string;
   subtitle: string;
   button: string;
-  
 };
 
 const HeroSection = () => {
   const [content, setContent] = useState<LandingContent | null>(null);
   const [loading, setLoading] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number>();
 
   useEffect(() => {
-    fetch("/content/landingpage/HeroSection.json")
+    fetch('/content/landingpage/HeroSection.json')
       .then((res) => res.json())
       .then((data) => {
         setContent(data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error("Failed to load landing page content:", err);
+      .catch((error) => {
+        console.error('Failed to fetch hero content:', error);
         setLoading(false);
       });
   }, []);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!content || !canvasRef.current) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -62,7 +61,6 @@ const HeroSection = () => {
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
-
         if (this.x > canvas.width) this.x = 0;
         if (this.x < 0) this.x = canvas.width;
         if (this.y > canvas.height) this.y = 0;
@@ -70,7 +68,6 @@ const HeroSection = () => {
       }
 
       draw() {
-        if (!ctx) return;
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -80,15 +77,12 @@ const HeroSection = () => {
 
     const particlesArray: Particle[] = [];
     const numberOfParticles = Math.min(canvas.width * canvas.height / 9000, 100);
-
     for (let i = 0; i < numberOfParticles; i++) {
       particlesArray.push(new Particle());
     }
 
-    function connect() {
-      if (!ctx) return;
+    const connect = () => {
       const maxDistance = 150;
-
       for (let a = 0; a < particlesArray.length; a++) {
         for (let b = a; b < particlesArray.length; b++) {
           const dx = particlesArray[a].x - particlesArray[b].x;
@@ -106,27 +100,25 @@ const HeroSection = () => {
           }
         }
       }
-    }
+    };
 
-    function animate() {
-      if (!ctx) return;
+    const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
-        particlesArray[i].draw();
-      }
-
+      particlesArray.forEach((p) => {
+        p.update();
+        p.draw();
+      });
       connect();
-      requestAnimationFrame(animate);
-    }
+      animationRef.current = requestAnimationFrame(animate);
+    };
 
     animate();
 
     return () => {
       window.removeEventListener('resize', setCanvasSize);
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, []);
+  }, [content]);
 
   if (loading || !content) {
     return (
@@ -138,23 +130,20 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      <canvas ref={canvasRef} className="absolute inset-0 z-0" />
+      <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full" />
       <div className="hero-gradient absolute inset-0 z-10"></div>
 
       <div className="container mx-auto px-4 z-20 animate-fade-in">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900">
             {content.title}
           </h1>
-
-          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-gray-600">
             {content.subtitle}
           </p>
-
-            <Button className="cta-button text-lg">
-              {content.button}
-            </Button>
-         
+          <Button className="cta-button text-lg">
+            {content.button}
+          </Button>
         </div>
       </div>
     </section>
